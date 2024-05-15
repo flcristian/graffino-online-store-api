@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\graffino-online-store-api.props" />
+</Project>

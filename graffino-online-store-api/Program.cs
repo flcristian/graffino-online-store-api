@@ -1,5 +1,7 @@
 using FluentMigrator.Runner;
 using graffino_online_store_api.Data;
+using graffino_online_store_api.Products.Repository;
+using graffino_online_store_api.Products.Repository.Interfaces;
 using graffino_online_store_api.System.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +70,9 @@ internal class Program
         #endregion
         
         #region SERVICES
+        
+        // REPOSITORIES
+        builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
         
         // MISCELLANEOUS
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

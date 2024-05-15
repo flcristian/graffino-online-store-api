@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D85XjE9p2Kq0/3QI5d+8ZeQQROMXbPFNNLs7uQtoI//9T0CMqoJz7LvCEVyCoLxnwpddEgjrrYDVh0rB6Y3Zew==",
+  "dgSpecHash": "sQgSzrGlhH2AILPtINL+7x3OgvCnSs2Le+GdGywj8thJXBBxq76EPvQYchuCinkmm3Q1RvF2+WQ9rFhpft0Exg==",
   "success": true,
-  "projectFilePath": "D:\\mycode\\csharp\\facultate\\graffino-online-store-api\\graffino-online-store-api\\graffino-online-store-api.csproj",
+  "projectFilePath": "D:\\mycode\\projects\\graffino-online-store\\graffino-online-store-api\\graffino-online-store-api\\graffino-online-store-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\qflor\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -84,6 +84,7 @@
     "C:\\Users\\qflor\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\mysqlconnector\\2.3.5\\mysqlconnector.2.3.5.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
+    "C:\\Users\\qflor\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\8.0.2\\pomelo.entityframeworkcore.mysql.8.0.2.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\pomelo.entityframeworkcore.mysql.design\\1.1.2\\pomelo.entityframeworkcore.mysql.design.1.1.2.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
