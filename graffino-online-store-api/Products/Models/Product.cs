@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using graffino_online_store_api.OrderDetails.Models;
 
 namespace graffino_online_store_api.Products.Models;
@@ -27,5 +28,6 @@ public abstract class Product
     [Column("dateAdded")]
     public DateTime DateAdded { get; set; }
     
+    [JsonIgnore]
     public virtual IEnumerable<OrderDetail> OrderDetails { get; set; }
 }

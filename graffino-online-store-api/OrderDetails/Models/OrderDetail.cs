@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using graffino_online_store_api.Orders.Models;
 using graffino_online_store_api.Products.Models;
 
@@ -24,7 +25,9 @@ public class OrderDetail
     [Column("count")]
     public int Count { get; set; }
     
+    [JsonIgnore]
     public virtual Order Order { get; set; }
+    
     public virtual Product Product { get; set; }
     
 }
