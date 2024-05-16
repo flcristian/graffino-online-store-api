@@ -47,3 +47,9 @@ s
 Cgraffino-online-store-api/System/Constants/AuthorizationPolicies.cs,4\f\4f225c5c360fff977e38fb127cf2acf2b04c2fdb
 T
 $graffino-online-store-api/Program.cs,e\f\efe8d88791f5261e148b6d41f5b67e4ec8e3a333
+j
+:graffino-online-store-api/graffino-online-store-api.csproj,b\0\b05215b29b6b0ebae08be62972dbd1f345ba3cdd
+q
+Agraffino-online-store-api/Users/Controllers/UsersApiController.cs,3\f\3f0a30c494f121bea59a50483e1ecc33e11d9718
+b
+2graffino-online-store-api/Users/UsersController.cs,2\6\26a505e10c696bd4de96132386caf15261be794a
