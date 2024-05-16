@@ -4,7 +4,7 @@ namespace graffino_online_store_api.Products.Services.Interfaces;
 
 public interface IProductsCommandService
 {
-    Task<GetClothingResponse> CreateClothing(CreateProductRequest request);
+    Task<GetClothingResponse> CreateClothing(CreateClothingRequest request);
     Task<GetTVResponse> CreateTV(CreateTVRequest request);
     Task<GetClothingResponse> UpdateClothing(UpdateClothingRequest request);
     Task<GetTVResponse> UpdateTV(UpdateTVRequest request);
