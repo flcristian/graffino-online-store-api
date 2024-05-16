@@ -77,3 +77,11 @@ f
 6graffino-online-store-api/Orders/Models/OrderStatus.cs,f\5\f560841f947a5cb19505b94d727b51cfaf4d314c
 è
 _graffino-online-store-api/Data/Migrations/FluentMigrator/AddStatusAndDatePlacedToOrdersTable.cs,f\e\fe852e9c62c37a781b7c2fa37546e4b15a83c54e
+{
+Kgraffino-online-store-api/Orders/Repository/Interfaces/IOrdersRepository.cs,9\a\9a3a62f9587d510785c128f8e35b7d18214ce414
+k
+;graffino-online-store-api/Orders/DTOs/CreateOrderRequest.cs,5\0\506cdf17227c797e760d07dfdd515b425ae610ad
+k
+;graffino-online-store-api/Orders/DTOs/UpdateOrderRequest.cs,4\c\4c298164f135856189e5511acd836367c2a7caed
+o
+?graffino-online-store-api/Orders/Repository/OrdersRepository.cs,6\4\645e02e3b10789d3c87479114c60bf312731fd15

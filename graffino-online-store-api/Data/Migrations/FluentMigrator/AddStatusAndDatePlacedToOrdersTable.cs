@@ -10,12 +10,12 @@ public class AddStatusAndDatePlacedToOrdersTable : Migration
     {
         Alter.Table("Orders")
             .AddColumn("status").AsInt32().NotNullable().WithDefaultValue(0)
-            .AddColumn("datePlaced").AsDateTime().Nullable();
+            .AddColumn("lastDateUpdated").AsDateTime().Nullable();
     }
 
     public override void Down()
     {
         Delete.Column("status").FromTable("Orders");
-        Delete.Column("datePlaced").FromTable("Orders");
+        Delete.Column("lastDateUpdated").FromTable("Orders");
     }
 }
