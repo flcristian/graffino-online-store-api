@@ -23,6 +23,13 @@ public class OrderDetailsRepository(AppDbContext context, IMapper mapper) : IOrd
             .FirstOrDefaultAsync(od => od.Id == id);
     }
 
+    public async Task<OrderDetail?> GetByOrderAndProductIdsAsync(int orderId, int productId)
+    {
+        return await context.OrderDetails
+            .Include(od => od.Product)
+            .FirstOrDefaultAsync(od => od.OrderId == orderId && od.ProductId == productId);
+    }
+
     public async Task<OrderDetail> CreateAsync(CreateOrderDetailRequest request)
     {
         OrderDetail orderDetail = mapper.Map<OrderDetail>(request);

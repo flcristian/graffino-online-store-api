@@ -25,6 +25,14 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    public async Task<Order?> GetCartByCustomerIdAsync(string customerId)
+    {
+        return await context.Orders
+            .Include(o => o.Customer)
+            .Include(o => o.OrderDetails)
+            .FirstOrDefaultAsync(o => o.CustomerId.Equals(customerId) && o.Status == OrderStatus.Cart);
+    }
+
     public async Task<Order> CreateAsync(CreateOrderRequest request)
     {
         Order order = mapper.Map<Order>(request);
