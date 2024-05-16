@@ -2,6 +2,8 @@ using FluentMigrator.Runner;
 using graffino_online_store_api.Data;
 using graffino_online_store_api.Products.Repository;
 using graffino_online_store_api.Products.Repository.Interfaces;
+using graffino_online_store_api.Products.Services;
+using graffino_online_store_api.Products.Services.Interfaces;
 using graffino_online_store_api.System.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -57,9 +59,9 @@ internal class Program
         
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("RequireAdmin", policy =>
+            options.AddPolicy(AuthorizationPolicies.REQUIRE_ADMIN_POLICY, policy =>
             {
-                policy.RequireRole("Admin");
+                policy.RequireRole("Administrator");
             });
         });
 
@@ -73,6 +75,10 @@ internal class Program
         
         // REPOSITORIES
         builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+        
+        // SERVICES
+        builder.Services.AddScoped<IProductsQueryService, ProductsQueryService>();
+        builder.Services.AddScoped<IProductsCommandService, ProductsCommandService>();
         
         // MISCELLANEOUS
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
