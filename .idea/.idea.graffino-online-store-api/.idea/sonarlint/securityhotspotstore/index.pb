@@ -33,8 +33,6 @@ s
 Cgraffino-online-store-api/Products/Services/ProductsQueryService.cs,5\2\520662628ac76d381b950a50a085a7002432b09f
 
 Ograffino-online-store-api/Products/Services/Interfaces/IProductsQueryService.cs,a\b\ab3eec2398216d25961854eddcd9d30fcac3e702
-m
-=graffino-online-store-api/Data/Migrations/InitializeTables.cs,2\7\2718981cf23bc081cbc6f41653252da9aa752117
 ^
 .graffino-online-store-api/Data/AppDbContext.cs,4\d\4d32770801523bd83529ad2e6d0354acbd0f0249
 u
@@ -101,3 +99,9 @@ q
 Agraffino-online-store-api/Orders/Services/OrdersCommandService.cs,f\4\f44f4d33f2b32f2d7a60580503615ded0f2e751e
 o
 ?graffino-online-store-api/Orders/Services/OrdersQueryService.cs,9\8\9885a0a9652c6f6664ab61f2a971fc03b8bff79f
+y
+Igraffino-online-store-api/Users/Repository/Interfaces/IUsersRepository.cs,f\e\fefdcf03c1a1aadb8b4b29844437fac412b653d8
+m
+=graffino-online-store-api/Users/Repository/UsersRepository.cs,7\f\7f127b28ce5bdd7000971e886fed05c843041eae
+g
+7graffino-online-store-api/Orders/DTOs/GetCartRequest.cs,2\c\2c0ddc09aa4f9b18ac6dd30849cc4fb847bc774c

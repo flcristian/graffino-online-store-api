@@ -7,6 +7,7 @@ public interface IOrdersRepository
 {
     Task<IEnumerable<Order>> GetAllAsync();
     Task<Order?> GetByIdAsync(int id);
+    Task<Order?> GetCartByCustomerIdAsync(string customerId); 
     Task<Order> CreateAsync(CreateOrderRequest request);
     Task<Order> UpdateAsync(UpdateOrderRequest request);
     Task<Order> DeleteByIdAsync(int id);

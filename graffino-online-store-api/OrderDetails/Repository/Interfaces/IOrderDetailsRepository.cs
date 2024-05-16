@@ -7,6 +7,7 @@ public interface IOrderDetailsRepository
 {
     Task<IEnumerable<OrderDetail>> GetAllAsync();
     Task<OrderDetail?> GetByIdAsync(int id);
+    Task<OrderDetail?> GetByOrderAndProductIdsAsync(int orderId, int productId);
     Task<OrderDetail> CreateAsync(CreateOrderDetailRequest request);
     Task<OrderDetail> UpdateAsync(UpdateOrderDetailRequest request);
     Task<OrderDetail> DeleteByIdAsync(int id);
