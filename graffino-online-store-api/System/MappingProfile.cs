@@ -1,4 +1,6 @@
 using AutoMapper;
+using graffino_online_store_api.OrderDetails.DTOs;
+using graffino_online_store_api.OrderDetails.Models;
 using graffino_online_store_api.Products.DTOs;
 using graffino_online_store_api.Products.Models;
 
@@ -10,7 +12,7 @@ public class MappingProfile : Profile
     {
         CreateMap<CreateClothingRequest, Clothing>();
         CreateMap<CreateTVRequest, TV>();
-        CreateMap<UpdateClothingRequest, Clothing>();
-        CreateMap<UpdateTVRequest, TV>();
+        CreateMap<CreateOrderDetailRequest, OrderDetail>();
+
     }
 }

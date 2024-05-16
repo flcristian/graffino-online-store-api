@@ -16,6 +16,14 @@ public class Order
     [Column("customerId")]
     public string CustomerId { get; set; }
     
+    [Required]
+    [Column("status")]
+    public OrderStatus Status { get; set; }
+    
+    [Required]
+    [Column("datePlaced")]
+    public DateTime? DatePlaced { get; set; }
+    
     public virtual IdentityUser Customer { get; set; }
     public virtual IEnumerable<OrderDetail> OrderDetails { get; set; }
 }
