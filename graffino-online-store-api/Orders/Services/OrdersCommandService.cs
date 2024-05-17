@@ -31,7 +31,7 @@ public class OrdersCommandService(
 
     public async Task<Order> UpdateOrder(UpdateOrderRequest request)
     {
-        if (request.Status == OrderStatus.None)
+        if (request.Status == OrderStatus.None || request.Status == OrderStatus.Cart)
         {
             throw new InvalidValueException(ExceptionMessages.INVALID_ORDER_STATUS);
         }

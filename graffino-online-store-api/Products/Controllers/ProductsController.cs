@@ -139,7 +139,7 @@ public class ProductsController(
 
     public override async Task<ActionResult<GetClothingResponse>> UpdateClothing(UpdateClothingRequest request)
     {
-        logger.LogInformation("PUT Rest Request: Update clothing.");
+        logger.LogInformation("PUT Rest Request: Update clothing with ID {Id}.", request.Id);
 
         try
         {
@@ -161,7 +161,7 @@ public class ProductsController(
 
     public override async Task<ActionResult<GetTVResponse>> UpdateTelevision(UpdateTVRequest request)
     {
-        logger.LogInformation("PUT Rest Request: Update television.");
+        logger.LogInformation("PUT Rest Request: Update television with ID {Id}.", request.Id);
 
         try
         {

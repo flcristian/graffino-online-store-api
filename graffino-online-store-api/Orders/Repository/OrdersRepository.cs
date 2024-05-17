@@ -14,6 +14,16 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
         return await context.Orders
             .Include(o => o.Customer)
             .Include(o => o.OrderDetails)
+            .Where(o => o.Status != OrderStatus.Cart)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Order>> GetAllByCustomerIdAsync(string customerId)
+    {
+        return await context.Orders
+            .Include(o => o.Customer)
+            .Include(o => o.OrderDetails)
+            .Where(o => o.CustomerId.Equals(customerId) && o.Status != OrderStatus.Cart)
             .ToListAsync();
     }
 
