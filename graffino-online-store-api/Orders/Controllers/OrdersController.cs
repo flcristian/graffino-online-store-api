@@ -98,9 +98,9 @@ public class OrdersController(
 
         try
         {
-            Order clothing = await commandService.CreateOrder(request);
+            Order order = await commandService.CreateOrder(request);
 
-            return Created(GenerateUriForCart(clothing.Id), clothing);
+            return Created(GenerateUriForCart(order.Id), order);
         }
         catch (ItemDoesNotExistException exception)
         {
@@ -116,13 +116,13 @@ public class OrdersController(
 
     public override async Task<ActionResult<Order>> UpdateOrder(UpdateOrderRequest request)
     {
-        logger.LogInformation("POST Rest Request: Update order with ID {Id}.", request.Id);
+        logger.LogInformation("PUT Rest Request: Update order with ID {Id}.", request.Id);
 
         try
         {
-            Order clothing = await commandService.UpdateOrder(request);
+            Order order = await commandService.UpdateOrder(request);
 
-            return Created(GenerateUriForOrder(clothing.Id), clothing);
+            return Created(GenerateUriForOrder(order.Id), order);
         }
         catch (InvalidValueException exception)
         {
@@ -138,13 +138,13 @@ public class OrdersController(
 
     public override async Task<ActionResult<Order>> DeleteOrderById(int id)
     {
-        logger.LogInformation("POST Rest Request: Delete order with ID {Id}.", id);
+        logger.LogInformation("DELETE Rest Request: Delete order with ID {Id}.", id);
         
         try
         {
-            Order clothing = await commandService.DeleteOrderById(id);
+            Order order = await commandService.DeleteOrderById(id);
 
-            return Created(GenerateUriForOrder(clothing.Id), clothing);
+            return Created(GenerateUriForOrder(order.Id), order);
         }
         catch (ItemDoesNotExistException exception)
         {

@@ -48,14 +48,14 @@ public abstract class OrdersApiController : ControllerBase
     [Produces("application/json")]
     public abstract Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request);
     
-    [HttpPost("update"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [HttpPut("update"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
     [ProducesResponseType(statusCode: 201, type: typeof(Order))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<Order>> UpdateOrder([FromBody] UpdateOrderRequest request);
     
-    [HttpPost("delete/{id}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [HttpDelete("delete/{id}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
     [ProducesResponseType(statusCode: 201, type: typeof(Order))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]

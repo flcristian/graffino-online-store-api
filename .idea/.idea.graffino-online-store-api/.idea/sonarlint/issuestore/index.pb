@@ -103,3 +103,7 @@ o
 Ngraffino-online-store-api/Orders/Controllers/Interfaces/OrdersApiController.cs,b\9\b902ede30e214e48a449286c57e57775203517b3
 p
 @graffino-online-store-api/Orders/Controllers/OrdersController.cs,1\5\157f5b315a626eb185a7c19239326413eae6e8b3
+Š
+Zgraffino-online-store-api/OrderDetails/Controllers/Interfaces/OrderDetailsApiController.cs,6\9\69d6f07178ccad8b99fb148774c3506c39c45e32
+|
+Lgraffino-online-store-api/OrderDetails/Controllers/OrderDetailsController.cs,d\1\d17699dd7fd6bc00daa36fab032f8a0a5485d818
