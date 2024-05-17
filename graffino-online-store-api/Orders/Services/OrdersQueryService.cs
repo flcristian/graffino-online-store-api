@@ -24,6 +24,23 @@ public class OrdersQueryService(
         return orders;
     }
 
+    public async Task<IEnumerable<Order>> GetAllOrdersByCustomerId(string customerId)
+    {
+        if (await usersRepository.GetByIdAsync(customerId) == null)
+        {
+            throw new ItemDoesNotExistException(ExceptionMessages.USER_DOES_NOT_EXIST);
+        }
+        
+        List<Order> orders = (await ordersRepository.GetAllByCustomerIdAsync(customerId)).ToList();
+
+        if (orders.Count == 0)
+        {
+            throw new ItemsDoNotExistException(ExceptionMessages.CUSTOMER_HAS_NO_ORDERS);
+        }
+
+        return orders;
+    }
+
     public async Task<Order> GetCartByCustomerId(string customerId)
     {
         if (await usersRepository.GetByIdAsync(customerId) == null)
