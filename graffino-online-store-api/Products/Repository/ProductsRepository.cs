@@ -50,6 +50,11 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
             .ToListAsync();
     }
 
+    public async Task<Product?> GetProductByIdAsync(int id)
+    {
+        return await context.Products.FindAsync(id);
+    }
+
     public async Task<GetClothingResponse?> GetClothingByIdAsync(int id)
     {
         Product? product = await context.Products.FindAsync(id);

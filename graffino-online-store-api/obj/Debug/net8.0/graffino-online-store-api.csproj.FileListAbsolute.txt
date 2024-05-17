@@ -175,10 +175,10 @@ D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-onli
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.graffino-online-store-api.props
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\staticwebassets.pack.json
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\scopedcss\bundle\graffino-online-store-api.styles.css
-D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\graffino.CAD12831.Up2Date
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\graffino-online-store-api.dll
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\refint\graffino-online-store-api.dll
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\graffino-online-store-api.pdb
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\graffino-online-store-api.genruntimeconfig.cache
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\ref\graffino-online-store-api.dll
 D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\mycode\projects\graffino-online-store\graffino-online-store-api\graffino-online-store-api\obj\Debug\net8.0\graffino-online-store-api.csproj.CopyComplete

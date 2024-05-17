@@ -1,4 +1,5 @@
 using graffino_online_store_api.Products.DTOs;
+using graffino_online_store_api.Products.Models;
 
 namespace graffino_online_store_api.Products.Repository.Interfaces;
 
@@ -6,6 +7,7 @@ public interface IProductsRepository
 {
     Task<IEnumerable<GetClothingResponse>> GetAllClothingAsync();
     Task<IEnumerable<GetTVResponse>> GetAllTelevisionsAsync();
+    Task<Product?> GetProductByIdAsync(int id);
     Task<GetClothingResponse?> GetClothingByIdAsync(int id);
     Task<GetTVResponse?> GetTVByIdAsync(int id);
     Task<GetClothingResponse> CreateClothingAsync(CreateClothingRequest request);
