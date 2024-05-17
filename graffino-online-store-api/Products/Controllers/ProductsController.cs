@@ -183,7 +183,7 @@ public class ProductsController(
 
     public override async Task<ActionResult<GetClothingResponse>> DeleteClothing(int id)
     {
-        logger.LogInformation("PUT Rest Request: Delete clothing with ID {Id}.", id);
+        logger.LogInformation("DELETE Rest Request: Delete clothing with ID {Id}.", id);
 
         try
         {
@@ -200,7 +200,7 @@ public class ProductsController(
 
     public override async Task<ActionResult<GetTVResponse>> DeleteTelevision(int id)
     {
-        logger.LogInformation("PUT Rest Request: Delete television with ID {Id}.", id);
+        logger.LogInformation("DELETE Rest Request: Delete television with ID {Id}.", id);
 
         try
         {
