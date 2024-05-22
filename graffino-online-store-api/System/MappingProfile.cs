@@ -13,6 +13,5 @@ public class MappingProfile : Profile
         CreateMap<CreateClothingRequest, Clothing>();
         CreateMap<CreateTVRequest, TV>();
         CreateMap<CreateOrderDetailRequest, OrderDetail>();
-
     }
 }

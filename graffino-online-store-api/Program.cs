@@ -1,10 +1,20 @@
 using FluentMigrator.Runner;
 using graffino_online_store_api.Data;
+using graffino_online_store_api.OrderDetails.Repository;
+using graffino_online_store_api.OrderDetails.Repository.Interfaces;
+using graffino_online_store_api.OrderDetails.Services;
+using graffino_online_store_api.OrderDetails.Services.Interfaces;
+using graffino_online_store_api.Orders.Repository;
+using graffino_online_store_api.Orders.Repository.Interfaces;
+using graffino_online_store_api.Orders.Services;
+using graffino_online_store_api.Orders.Services.Interfaces;
 using graffino_online_store_api.Products.Repository;
 using graffino_online_store_api.Products.Repository.Interfaces;
 using graffino_online_store_api.Products.Services;
 using graffino_online_store_api.Products.Services.Interfaces;
 using graffino_online_store_api.System.Constants;
+using graffino_online_store_api.Users.Repository;
+using graffino_online_store_api.Users.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -45,13 +55,6 @@ internal class Program
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseMySql(builder.Configuration.GetConnectionString(SystemConstants.SQL_CONFIGURATION_NAME)!,
                 new MySqlServerVersion(new Version(8, 0, 21))));
-
-        builder.Services.AddFluentMigratorCore()
-            .ConfigureRunner(rb => rb
-                .AddMySql5()
-                .WithGlobalConnectionString(builder.Configuration.GetConnectionString(SystemConstants.SQL_CONFIGURATION_NAME))
-                .ScanIn(typeof(Program).Assembly).For.Migrations())
-            .AddLogging(lb => lb.AddFluentMigratorConsole());
         
         #endregion
         
@@ -75,10 +78,17 @@ internal class Program
         
         // REPOSITORIES
         builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+        builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+        builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+        builder.Services.AddScoped<IUsersRepository, UsersRepository>();
         
         // SERVICES
         builder.Services.AddScoped<IProductsQueryService, ProductsQueryService>();
         builder.Services.AddScoped<IProductsCommandService, ProductsCommandService>();
+        builder.Services.AddScoped<IOrdersQueryService, OrdersQueryService>();
+        builder.Services.AddScoped<IOrdersCommandService, OrdersCommandService>();
+        builder.Services.AddScoped<IOrderDetailsQueryService, OrderDetailsQueryService>();
+        builder.Services.AddScoped<IOrderDetailsCommandService, OrderDetailsCommandService>();
         
         // MISCELLANEOUS
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -97,16 +107,9 @@ internal class Program
 
         app.MapIdentityApi<IdentityUser>();
         app.UseHttpsRedirection();
+        app.UseCors(SystemConstants.CORS_CLIENT_POLICY_NAME);
         app.UseAuthorization();
         app.MapControllers();
-
-        using (var scope = app.Services.CreateScope())
-        {
-            var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
-        }
-
-        app.UseCors(SystemConstants.CORS_CLIENT_POLICY_NAME);
         app.Run();
 
         #endregion

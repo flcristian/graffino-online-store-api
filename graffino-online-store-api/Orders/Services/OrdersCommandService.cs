@@ -55,4 +55,27 @@ public class OrdersCommandService(
         Order order = await ordersRepository.DeleteByIdAsync(id);
         return order;
     }
+
+    public async Task<Order> PlaceOrder(PlaceOrderRequest request)
+    {
+        Order? order = await ordersRepository.GetByIdAsync(request.Id);
+        
+        if (order == null)
+        {
+            throw new ItemDoesNotExistException(ExceptionMessages.ORDER_DOES_NOT_EXIST);
+        }
+
+        if (order.Status != OrderStatus.Cart)
+        {
+            throw new InvalidValueException(ExceptionMessages.ORDER_NOT_CART);
+        }
+
+        order = await ordersRepository.UpdateAsync(new UpdateOrderRequest
+        {
+            Id = request.Id,
+            Status = OrderStatus.Processing
+        });
+
+        return order;
+    }
 }

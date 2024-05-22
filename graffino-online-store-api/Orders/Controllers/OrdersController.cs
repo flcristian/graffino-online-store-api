@@ -3,6 +3,7 @@ using graffino_online_store_api.Orders.DTOs;
 using graffino_online_store_api.Orders.Models;
 using graffino_online_store_api.Orders.Services.Interfaces;
 using graffino_online_store_api.System.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace graffino_online_store_api.Orders.Controllers;
@@ -10,7 +11,8 @@ namespace graffino_online_store_api.Orders.Controllers;
 public class OrdersController(
     ILogger<OrdersController> logger,
     IOrdersQueryService queryService,
-    IOrdersCommandService commandService
+    IOrdersCommandService commandService,
+    UserManager<IdentityUser> userManager
     ) : OrdersApiController
 {
     #region QUERY ENDPOINTS
@@ -92,9 +94,9 @@ public class OrdersController(
     
     #region COMMAND ENDPOINTS
 
-    public override async Task<ActionResult<Order>> CreateOrder(CreateOrderRequest request)
+    public override async Task<ActionResult<Order>> CreateCart(CreateOrderRequest request)
     {
-        logger.LogInformation("POST Rest Request: Create order.");
+        logger.LogInformation("POST Rest Request: Create cart.");
 
         try
         {
@@ -108,6 +110,40 @@ public class OrdersController(
             return NotFound(exception.Message);
         }
         catch (ItemAlreadyExistsException exception)
+        {
+            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
+            return BadRequest(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<Order>> PlaceOrder(PlaceOrderRequest request)
+    {
+        logger.LogInformation("PUT Rest Request: Place order.");
+
+        try
+        {
+            Order order = await queryService.GetOrderById(request.Id);
+            
+            var user = await userManager.GetUserAsync(User);
+            if (!order.CustomerId.Equals(user!.Id))
+            {
+                return Unauthorized("Invalid operation.");
+            }
+            
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        
+        try
+        {
+            Order order = await commandService.PlaceOrder(request);
+
+            return Created(GenerateUriForCart(order.Id), order);
+        }
+        catch (InvalidValueException exception)
         {
             logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
             return BadRequest(exception.Message);

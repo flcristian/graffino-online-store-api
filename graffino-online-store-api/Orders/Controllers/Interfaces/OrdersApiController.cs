@@ -41,22 +41,29 @@ public abstract class OrdersApiController : ControllerBase
     
     #region COMMAND ENDPOINTS
     
-    [HttpPost("create"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [HttpPost("create-cart"), Authorize]
     [ProducesResponseType(statusCode: 201, type: typeof(Order))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request);
+    public abstract Task<ActionResult<Order>> CreateCart([FromBody] CreateOrderRequest request);
+    
+    [HttpPut("place-order"), Authorize]
+    [ProducesResponseType(statusCode: 202, type: typeof(Order))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [ProducesResponseType(statusCode: 400, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Order>> PlaceOrder([FromBody] PlaceOrderRequest request);
     
     [HttpPut("update"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 201, type: typeof(Order))]
+    [ProducesResponseType(statusCode: 202, type: typeof(Order))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<Order>> UpdateOrder([FromBody] UpdateOrderRequest request);
     
     [HttpDelete("delete/{id}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 201, type: typeof(Order))]
+    [ProducesResponseType(statusCode: 202, type: typeof(Order))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<Order>> DeleteOrderById([FromRoute] int id);

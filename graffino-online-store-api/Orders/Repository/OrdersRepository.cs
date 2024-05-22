@@ -45,9 +45,12 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
 
     public async Task<Order> CreateAsync(CreateOrderRequest request)
     {
-        Order order = mapper.Map<Order>(request);
-        order.Status = OrderStatus.Cart;
-        order.LastDateUpdated = DateTime.Now;
+        Order order = new Order
+        {
+            CustomerId = request.CustomerId,
+            Status = OrderStatus.Cart,
+            LastDateUpdated = DateTime.Now
+        };
         context.Orders.Add(order);
         await context.SaveChangesAsync();
         return order;

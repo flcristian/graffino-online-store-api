@@ -12,8 +12,8 @@ using graffino_online_store_api.Data;
 namespace graffino_online_store_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240515105816_InitializeUserTables")]
-    partial class InitializeUserTables
+    [Migration("20240522110848_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,6 +221,146 @@ namespace graffino_online_store_api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("graffino_online_store_api.OrderDetails.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int")
+                        .HasColumnName("count");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int")
+                        .HasColumnName("orderId");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasColumnName("productId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("IX_OrderDetails_OrderId");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("IX_OrderDetails_ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Orders.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("customerId");
+
+                    b.Property<DateTime?>("LastDateUpdated")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("lastDateUpdated");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("IX_Orders_CustomerId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int")
+                        .HasColumnName("category");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("dateAdded");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("imageUrl");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("name");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double")
+                        .HasColumnName("price");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.Clothing", b =>
+                {
+                    b.HasBaseType("graffino_online_store_api.Products.Models.Product");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("color");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("size");
+
+                    b.Property<string>("Style")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("style");
+
+                    b.ToTable("Clothing");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.TV", b =>
+                {
+                    b.HasBaseType("graffino_online_store_api.Products.Models.Product");
+
+                    b.Property<string>("Diameter")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("diameter");
+
+                    b.Property<string>("Resolution")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("resolution");
+
+                    b.ToTable("Televisions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -270,6 +410,64 @@ namespace graffino_online_store_api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.OrderDetails.Models.OrderDetail", b =>
+                {
+                    b.HasOne("graffino_online_store_api.Orders.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("graffino_online_store_api.Products.Models.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Orders.Models.Order", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.Clothing", b =>
+                {
+                    b.HasOne("graffino_online_store_api.Products.Models.Product", null)
+                        .WithOne()
+                        .HasForeignKey("graffino_online_store_api.Products.Models.Clothing", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.TV", b =>
+                {
+                    b.HasOne("graffino_online_store_api.Products.Models.Product", null)
+                        .WithOne()
+                        .HasForeignKey("graffino_online_store_api.Products.Models.TV", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Orders.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("graffino_online_store_api.Products.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

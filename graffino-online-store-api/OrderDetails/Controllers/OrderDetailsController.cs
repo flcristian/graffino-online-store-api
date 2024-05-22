@@ -2,13 +2,18 @@ using graffino_online_store_api.OrderDetails.Controllers.Interfaces;
 using graffino_online_store_api.OrderDetails.DTOs;
 using graffino_online_store_api.OrderDetails.Models;
 using graffino_online_store_api.OrderDetails.Services.Interfaces;
+using graffino_online_store_api.Orders.Models;
+using graffino_online_store_api.Orders.Services.Interfaces;
 using graffino_online_store_api.System.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace graffino_online_store_api.OrderDetails.Controllers;
 
 public class OrderDetailsController(
     ILogger<OrderDetailsController> logger,
+    IOrdersQueryService ordersQueryService,
+    UserManager<IdentityUser> userManager,
     IOrderDetailsQueryService queryService,
     IOrderDetailsCommandService commandService
     ) : OrderDetailsApiController
@@ -59,6 +64,23 @@ public class OrderDetailsController(
 
         try
         {
+            Order order = await ordersQueryService.GetOrderById(request.OrderId);
+            
+            var user = await userManager.GetUserAsync(User);
+            IEnumerable<string> roles = await userManager.GetRolesAsync(user!);
+            if (!order.CustomerId.Equals(user!.Id) && !roles.Contains("Administrator"))
+            {
+                return Unauthorized("Invalid operation.");
+            }
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        
+        try
+        {
             OrderDetail orderDetail = await commandService.CreateOrderDetail(request);
 
             return Created(GenerateUriForOrderDetail(orderDetail.Id), orderDetail);
@@ -84,6 +106,26 @@ public class OrderDetailsController(
     {
         logger.LogInformation("PUT Rest Request: Update order detail with ID {Id}.", request.Id);
 
+        logger.LogInformation("POST Rest Request: Create order detail detail.");
+
+        try
+        {
+            OrderDetail od = await queryService.GetOrderDetailById(request.Id);
+            Order order = await ordersQueryService.GetOrderById(od.OrderId);
+            
+            var user = await userManager.GetUserAsync(User);
+            IEnumerable<string> roles = await userManager.GetRolesAsync(user!);
+            if (!order.CustomerId.Equals(user!.Id) && !roles.Contains("Administrator"))
+            {
+                return Unauthorized("Invalid operation.");
+            }
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        
         try
         {
             OrderDetail orderDetail = await commandService.UpdateOrderDetail(request);
