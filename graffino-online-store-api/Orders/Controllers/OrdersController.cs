@@ -56,23 +56,6 @@ public class OrdersController(
         }
     }
 
-    public override async Task<ActionResult<Order>> GetCartByCustomerId(string customerId)
-    {
-        logger.LogInformation("GET Rest Request: Get cart by customer ID {Id}.", customerId);
-
-        try
-        {
-            Order cart = await queryService.GetCartByCustomerId(customerId);
-
-            return Ok(cart);
-        }
-        catch (ItemDoesNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
-    }
-
     public override async Task<ActionResult<Order>> GetOrderById(int id)
     {
         logger.LogInformation("GET Rest Request: Get order by ID {Id}.", id);
@@ -94,7 +77,7 @@ public class OrdersController(
     
     #region COMMAND ENDPOINTS
 
-    public override async Task<ActionResult<Order>> CreateCart(CreateOrderRequest request)
+    public override async Task<ActionResult<Order>> CreateOrder(CreateOrderRequest request)
     {
         logger.LogInformation("POST Rest Request: Create cart.");
 
@@ -102,7 +85,7 @@ public class OrdersController(
         {
             Order order = await commandService.CreateOrder(request);
 
-            return Created(GenerateUriForCart(order.Id), order);
+            return Created(GenerateUriForOrder(order.Id), order);
         }
         catch (ItemDoesNotExistException exception)
         {
@@ -115,41 +98,7 @@ public class OrdersController(
             return BadRequest(exception.Message);
         }
     }
-
-    public override async Task<ActionResult<Order>> PlaceOrder(PlaceOrderRequest request)
-    {
-        logger.LogInformation("PUT Rest Request: Place order.");
-
-        try
-        {
-            Order order = await queryService.GetOrderById(request.Id);
-            
-            var user = await userManager.GetUserAsync(User);
-            if (!order.CustomerId.Equals(user!.Id))
-            {
-                return Unauthorized("Invalid operation.");
-            }
-            
-        }
-        catch (ItemDoesNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
-        
-        try
-        {
-            Order order = await commandService.PlaceOrder(request);
-
-            return Created(GenerateUriForCart(order.Id), order);
-        }
-        catch (InvalidValueException exception)
-        {
-            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
-        }
-    }
-
+    
     public override async Task<ActionResult<Order>> UpdateOrder(UpdateOrderRequest request)
     {
         logger.LogInformation("PUT Rest Request: Update order with ID {Id}.", request.Id);
@@ -192,11 +141,6 @@ public class OrdersController(
     #endregion
 
     #region PRIVATE METHODS
-
-    private string GenerateUriForCart(int cartId)
-    {
-        return Url.Action("GetCartByCustomerId", "Orders", new { id = cartId }, Request.Scheme)!;
-    }
 
     private string GenerateUriForOrder(int orderId)
     {

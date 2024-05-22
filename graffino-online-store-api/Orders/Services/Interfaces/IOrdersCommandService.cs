@@ -8,5 +8,4 @@ public interface IOrdersCommandService
     Task<Order> CreateOrder(CreateOrderRequest request);
     Task<Order> UpdateOrder(UpdateOrderRequest request);
     Task<Order> DeleteOrderById(int id);
-    Task<Order> PlaceOrder(PlaceOrderRequest request);
 }

@@ -1,7 +1,9 @@
+using graffino_online_store_api.OrderDetails.DTOs;
 using graffino_online_store_api.Orders.DTOs;
 using graffino_online_store_api.Orders.Models;
 using graffino_online_store_api.Orders.Repository.Interfaces;
 using graffino_online_store_api.Orders.Services.Interfaces;
+using graffino_online_store_api.Products.Repository.Interfaces;
 using graffino_online_store_api.System.Constants;
 using graffino_online_store_api.System.Exceptions;
 using graffino_online_store_api.Users.Repository.Interfaces;
@@ -10,7 +12,9 @@ namespace graffino_online_store_api.Orders.Services;
 
 public class OrdersCommandService(
     IUsersRepository usersRepository,
-    IOrdersRepository ordersRepository
+    IOrdersRepository ordersRepository,
+    IProductsRepository productsRepository
+    
     ) : IOrdersCommandService
 {
     public async Task<Order> CreateOrder(CreateOrderRequest request)
@@ -20,9 +24,12 @@ public class OrdersCommandService(
             throw new ItemDoesNotExistException(ExceptionMessages.USER_DOES_NOT_EXIST);
         }
 
-        if (await ordersRepository.GetCartByCustomerIdAsync(request.CustomerId) != null)
+        foreach (CreateOrderDetailRequest od in request.OrderDetails)
         {
-            throw new ItemAlreadyExistsException(ExceptionMessages.CART_ALREADY_EXISTS);
+            if (await productsRepository.GetProductByIdAsync(od.ProductId) == null)
+            {
+                throw new ItemDoesNotExistException(ExceptionMessages.PRODUCT_DOES_NOT_EXIST);
+            }
         }
 
         Order order = await ordersRepository.CreateAsync(request);
@@ -31,7 +38,7 @@ public class OrdersCommandService(
 
     public async Task<Order> UpdateOrder(UpdateOrderRequest request)
     {
-        if (request.Status == OrderStatus.None || request.Status == OrderStatus.Cart)
+        if (request.Status == OrderStatus.None)
         {
             throw new InvalidValueException(ExceptionMessages.INVALID_ORDER_STATUS);
         }
@@ -53,29 +60,6 @@ public class OrdersCommandService(
         }
 
         Order order = await ordersRepository.DeleteByIdAsync(id);
-        return order;
-    }
-
-    public async Task<Order> PlaceOrder(PlaceOrderRequest request)
-    {
-        Order? order = await ordersRepository.GetByIdAsync(request.Id);
-        
-        if (order == null)
-        {
-            throw new ItemDoesNotExistException(ExceptionMessages.ORDER_DOES_NOT_EXIST);
-        }
-
-        if (order.Status != OrderStatus.Cart)
-        {
-            throw new InvalidValueException(ExceptionMessages.ORDER_NOT_CART);
-        }
-
-        order = await ordersRepository.UpdateAsync(new UpdateOrderRequest
-        {
-            Id = request.Id,
-            Status = OrderStatus.Processing
-        });
-
         return order;
     }
 }

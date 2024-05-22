@@ -3,9 +3,8 @@ namespace graffino_online_store_api.Orders.Models;
 public enum OrderStatus
 {
     None = 0,
-    Cart = 1,
-    Processing = 2,
-    Shipping = 3,
-    Shipped = 4,
-    Complete = 5
+    Processing = 1,
+    Shipping = 2,
+    Shipped = 3,
+    Complete = 4
 }

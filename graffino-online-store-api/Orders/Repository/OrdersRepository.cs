@@ -1,5 +1,6 @@
 using AutoMapper;
 using graffino_online_store_api.Data;
+using graffino_online_store_api.OrderDetails.Models;
 using graffino_online_store_api.Orders.DTOs;
 using graffino_online_store_api.Orders.Models;
 using graffino_online_store_api.Orders.Repository.Interfaces;
@@ -14,7 +15,7 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
         return await context.Orders
             .Include(o => o.Customer)
             .Include(o => o.OrderDetails)
-            .Where(o => o.Status != OrderStatus.Cart)
+            .ThenInclude(od => od.Product)
             .ToListAsync();
     }
 
@@ -23,7 +24,8 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
         return await context.Orders
             .Include(o => o.Customer)
             .Include(o => o.OrderDetails)
-            .Where(o => o.CustomerId.Equals(customerId) && o.Status != OrderStatus.Cart)
+            .ThenInclude(od => od.Product)
+            .Where(o => o.CustomerId.Equals(customerId))
             .ToListAsync();
     }
 
@@ -32,15 +34,8 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
         return await context.Orders
             .Include(o => o.Customer)
             .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Product)
             .FirstOrDefaultAsync(o => o.Id == id);
-    }
-
-    public async Task<Order?> GetCartByCustomerIdAsync(string customerId)
-    {
-        return await context.Orders
-            .Include(o => o.Customer)
-            .Include(o => o.OrderDetails)
-            .FirstOrDefaultAsync(o => o.CustomerId.Equals(customerId) && o.Status == OrderStatus.Cart);
     }
 
     public async Task<Order> CreateAsync(CreateOrderRequest request)
@@ -48,10 +43,18 @@ public class OrdersRepository(AppDbContext context, IMapper mapper) : IOrdersRep
         Order order = new Order
         {
             CustomerId = request.CustomerId,
-            Status = OrderStatus.Cart,
+            Status = OrderStatus.Processing,
             LastDateUpdated = DateTime.Now
         };
         context.Orders.Add(order);
+
+        order.OrderDetails = new List<OrderDetail>();
+        request.OrderDetails.ForEach(od =>
+        {
+            OrderDetail orderDetail = mapper.Map<OrderDetail>(od);
+            order.OrderDetails.Add(orderDetail);
+        });
+        
         await context.SaveChangesAsync();
         return order;
     }

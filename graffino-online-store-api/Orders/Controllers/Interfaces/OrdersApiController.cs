@@ -18,20 +18,13 @@ public abstract class OrdersApiController : ControllerBase
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Order>>> GetAllOrders();
     
-    
     [HttpGet("orders/{customerId}")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Order>))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCustomerId([FromRoute] string customerId);
     
-    [HttpGet("cart/{customerId}")]
-    [ProducesResponseType(statusCode: 200, type: typeof(Order))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<Order>> GetCartByCustomerId([FromRoute] string customerId);
-    
-    [HttpGet("order/{customerId}")]
+    [HttpGet("order/{id}")]
     [ProducesResponseType(statusCode: 200, type: typeof(Order))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
@@ -41,19 +34,12 @@ public abstract class OrdersApiController : ControllerBase
     
     #region COMMAND ENDPOINTS
     
-    [HttpPost("create-cart"), Authorize]
+    [HttpPost("create"), Authorize]
     [ProducesResponseType(statusCode: 201, type: typeof(Order))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<Order>> CreateCart([FromBody] CreateOrderRequest request);
-    
-    [HttpPut("place-order"), Authorize]
-    [ProducesResponseType(statusCode: 202, type: typeof(Order))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [ProducesResponseType(statusCode: 400, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<Order>> PlaceOrder([FromBody] PlaceOrderRequest request);
+    public abstract Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request);
     
     [HttpPut("update"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
     [ProducesResponseType(statusCode: 202, type: typeof(Order))]

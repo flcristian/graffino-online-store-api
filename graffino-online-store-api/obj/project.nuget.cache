@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sQgSzrGlhH2AILPtINL+7x3OgvCnSs2Le+GdGywj8thJXBBxq76EPvQYchuCinkmm3Q1RvF2+WQ9rFhpft0Exg==",
+  "dgSpecHash": "TTn7jhm/c4Xjk1qNfl7wQA8HUAXQMcRHxpwp1iS/NnuS7F4L2+LOcE7l7wYBBLGgtZkMKW5H+u19TtpAJx+pAw==",
   "success": true,
   "projectFilePath": "D:\\mycode\\projects\\graffino-online-store\\graffino-online-store-api\\graffino-online-store-api\\graffino-online-store-api.csproj",
   "expectedPackageFiles": [
@@ -108,6 +108,7 @@
     "C:\\Users\\qflor\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\scrutor\\3.3.0\\scrutor.3.3.0.nupkg.sha512",
+    "C:\\Users\\qflor\\.nuget\\packages\\stripe.net\\44.9.0-beta.1\\stripe.net.44.9.0-beta.1.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\swashbuckle.aspnetcore.filters\\8.0.2\\swashbuckle.aspnetcore.filters.8.0.2.nupkg.sha512",
     "C:\\Users\\qflor\\.nuget\\packages\\swashbuckle.aspnetcore.filters.abstractions\\8.0.2\\swashbuckle.aspnetcore.filters.abstractions.8.0.2.nupkg.sha512",

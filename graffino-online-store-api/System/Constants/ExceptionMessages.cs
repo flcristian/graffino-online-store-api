@@ -10,11 +10,8 @@ public static class ExceptionMessages
     public const string ORDER_DETAILS_DO_NOT_EXIST = "There are no order details.";
     public const string ORDER_DETAIL_ALREADY_EXISTS = "This product has already been added to the order.";
     public const string INVALID_ORDER_DETAIL_PRODUCT_COUNT = "Product count is null, negative or invalid.";
-    public const string CART_DOES_NOT_EXIST = "The customer has no cart.";
-    public const string CART_ALREADY_EXISTS = "The cart already exists.";
     public const string INVALID_ORDER_STATUS = "Order status is invalid.";
     public const string CUSTOMER_HAS_NO_ORDERS = "This customer has no orders.";
-    public const string ORDER_NOT_CART = "The order is not in cart status.";
 
     public const string ORDER_DOES_NOT_EXIST = "This order does not exist.";
     public const string ORDERS_DO_NOT_EXIST = "There are no orders.";

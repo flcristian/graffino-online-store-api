@@ -23,6 +23,7 @@
           "Newtonsoft.Json": "13.0.3",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2",
           "Pomelo.EntityFrameworkCore.MySql.Design": "1.1.2",
+          "Stripe.net": "44.9.0-beta.1",
           "Swashbuckle.AspNetCore": "6.4.0",
           "Swashbuckle.AspNetCore.Filters": "8.0.2"
         },
@@ -1222,6 +1223,18 @@
           "lib/netcoreapp3.1/Scrutor.dll": {
             "assemblyVersion": "3.0.2.0",
             "fileVersion": "3.0.2.0"
+          }
+        }
+      },
+      "Stripe.net/44.9.0-beta.1": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "System.Configuration.ConfigurationManager": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/Stripe.net.dll": {
+            "assemblyVersion": "44.9.0.0",
+            "fileVersion": "44.9.0.0"
           }
         }
       },
@@ -2821,6 +2834,13 @@
       "sha512": "sha512-BwqCnFzp2/Z+pq17iztxlIkR/ZANyPRR4PdE57WL1w/JW4AM/2imoxBWTL3+G+YXA46ce4s9OUgwWqTXYrtI8A==",
       "path": "scrutor/3.3.0",
       "hashPath": "scrutor.3.3.0.nupkg.sha512"
+    },
+    "Stripe.net/44.9.0-beta.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+0G+DcCTNfsfShxgr0iZEZ+OrEeBsw2Y4edUapxd2K4uQ0awsMllLIstdDOH3hwzNOEyRk22/wtZ9LnJ3EVjyw==",
+      "path": "stripe.net/44.9.0-beta.1",
+      "hashPath": "stripe.net.44.9.0-beta.1.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.4.0": {
       "type": "package",
