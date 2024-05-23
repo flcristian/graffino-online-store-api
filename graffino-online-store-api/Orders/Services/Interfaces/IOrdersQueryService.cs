@@ -7,6 +7,5 @@ public interface IOrdersQueryService
 {
     Task<IEnumerable<Order>> GetAllOrders();
     Task<IEnumerable<Order>> GetAllOrdersByCustomerId(string customerId);
-    Task<Order> GetCartByCustomerId(string customerId);
     Task<Order> GetOrderById(int id);
 }

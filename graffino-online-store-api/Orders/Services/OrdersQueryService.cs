@@ -40,23 +40,6 @@ public class OrdersQueryService(
 
         return orders;
     }
-
-    public async Task<Order> GetCartByCustomerId(string customerId)
-    {
-        if (await usersRepository.GetByIdAsync(customerId) == null)
-        {
-            throw new ItemDoesNotExistException(ExceptionMessages.USER_DOES_NOT_EXIST);
-        }
-
-        Order? order = await ordersRepository.GetCartByCustomerIdAsync(customerId);
-
-        if (order == null)
-        {
-            throw new ItemDoesNotExistException(ExceptionMessages.CART_DOES_NOT_EXIST);
-        }
-
-        return order;
-    }
     
     public async Task<Order> GetOrderById(int id)
     {

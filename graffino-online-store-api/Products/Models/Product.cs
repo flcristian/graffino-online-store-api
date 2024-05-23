@@ -28,6 +28,10 @@ public abstract class Product
     [Column("dateAdded")]
     public DateTime DateAdded { get; set; }
     
+    [Required]
+    [Column("imageUrl")]
+    public string ImageUrl { get; set; }
+    
     [JsonIgnore]
     public virtual IEnumerable<OrderDetail> OrderDetails { get; set; }
 }

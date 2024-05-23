@@ -3,6 +3,7 @@ using graffino_online_store_api.Orders.DTOs;
 using graffino_online_store_api.Orders.Models;
 using graffino_online_store_api.Orders.Services.Interfaces;
 using graffino_online_store_api.System.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace graffino_online_store_api.Orders.Controllers;
@@ -10,7 +11,8 @@ namespace graffino_online_store_api.Orders.Controllers;
 public class OrdersController(
     ILogger<OrdersController> logger,
     IOrdersQueryService queryService,
-    IOrdersCommandService commandService
+    IOrdersCommandService commandService,
+    UserManager<IdentityUser> userManager
     ) : OrdersApiController
 {
     #region QUERY ENDPOINTS
@@ -54,23 +56,6 @@ public class OrdersController(
         }
     }
 
-    public override async Task<ActionResult<Order>> GetCartByCustomerId(string customerId)
-    {
-        logger.LogInformation("GET Rest Request: Get cart by customer ID {Id}.", customerId);
-
-        try
-        {
-            Order cart = await queryService.GetCartByCustomerId(customerId);
-
-            return Ok(cart);
-        }
-        catch (ItemDoesNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
-    }
-
     public override async Task<ActionResult<Order>> GetOrderById(int id)
     {
         logger.LogInformation("GET Rest Request: Get order by ID {Id}.", id);
@@ -94,13 +79,13 @@ public class OrdersController(
 
     public override async Task<ActionResult<Order>> CreateOrder(CreateOrderRequest request)
     {
-        logger.LogInformation("POST Rest Request: Create order.");
+        logger.LogInformation("POST Rest Request: Create cart.");
 
         try
         {
             Order order = await commandService.CreateOrder(request);
 
-            return Created(GenerateUriForCart(order.Id), order);
+            return Created("Created", order);
         }
         catch (ItemDoesNotExistException exception)
         {
@@ -113,7 +98,7 @@ public class OrdersController(
             return BadRequest(exception.Message);
         }
     }
-
+    
     public override async Task<ActionResult<Order>> UpdateOrder(UpdateOrderRequest request)
     {
         logger.LogInformation("PUT Rest Request: Update order with ID {Id}.", request.Id);
@@ -156,11 +141,6 @@ public class OrdersController(
     #endregion
 
     #region PRIVATE METHODS
-
-    private string GenerateUriForCart(int cartId)
-    {
-        return Url.Action("GetCartByCustomerId", "Orders", new { id = cartId }, Request.Scheme)!;
-    }
 
     private string GenerateUriForOrder(int orderId)
     {

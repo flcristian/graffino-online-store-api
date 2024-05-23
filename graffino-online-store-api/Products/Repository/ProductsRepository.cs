@@ -22,6 +22,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
                     Name = product.Name,
                     Price = product.Price,
                     DateAdded = product.DateAdded,
+                    ImageUrl = product.ImageUrl,
                     Category = Category.Clothing,
                     Color = clothing.Color,
                     Style = clothing.Style,
@@ -42,6 +43,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
                     Id = product.Id,
                     Name = product.Name,
                     Price = product.Price,
+                    ImageUrl = product.ImageUrl,
                     DateAdded = product.DateAdded,
                     Category = Category.Television,
                     Diameter = tv.Diameter,
@@ -106,6 +108,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
 
         product.Name = request.Name;
         product.Price = request.Price;
+        product.ImageUrl = request.ImageUrl;
 
         clothing.Color = request.Color;
         clothing.Style = request.Style;
@@ -125,7 +128,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
 
         product.Name = request.Name;
         product.Price = request.Price;
-
+        product.ImageUrl = request.ImageUrl;
         tv.Diameter = request.Diameter;
         tv.Resolution = request.Resolution;
         
@@ -165,6 +168,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
             Id = clothing.Id,
             Name = clothing.Name,
             Price = clothing.Price,
+            ImageUrl = clothing.ImageUrl,
             DateAdded = clothing.DateAdded,
             Category = Category.Television,
             Color = clothing.Color,
@@ -180,6 +184,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
             Id = tv.Id,
             Name = tv.Name,
             Price = tv.Price,
+            ImageUrl = tv.ImageUrl,
             DateAdded = tv.DateAdded,
             Category = Category.Television,
             Diameter = tv.Diameter,
@@ -195,6 +200,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
             Name = product.Name,
             Price = product.Price,
             DateAdded = product.DateAdded,
+            ImageUrl = product.ImageUrl,
             Category = Category.Clothing,
             Color = clothing.Color,
             Style = clothing.Style,
@@ -210,6 +216,7 @@ public class ProductsRepository(IMapper mapper, AppDbContext context) : IProduct
             Name = product.Name,
             Price = product.Price,
             DateAdded = product.DateAdded,
+            ImageUrl = product.ImageUrl,
             Category = Category.Television,
             Diameter = tv.Diameter,
             Resolution = tv.Resolution

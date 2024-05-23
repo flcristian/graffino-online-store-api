@@ -1,0 +1,13 @@
+
+fcsharpsquid:S1192"IDefine a constant instead of using this literal 'MySql:CharSet' 50 times.(Û¨ò¨
+`csharpsquid:S1192"CDefine a constant instead of using this literal 'utf8mb4' 50 times.(Û¨ò¨
+hcsharpsquid:S1192"FDefine a constant instead of using this literal 'AspNetRoles' 5 times.(ÅÔ¨çúÿÿÿÿ
+ecsharpsquid:S1192"HDefine a constant instead of using this literal 'varchar(255)' 13 times.(ÇóŞß
+dcsharpsquid:S1192"GDefine a constant instead of using this literal 'varchar(256)' 6 times.(«åß
+fcsharpsquid:S1192"DDefine a constant instead of using this literal 'longtext' 18 times.(¸Ì€Õøÿÿÿÿ
+ccsharpsquid:S1192&"FDefine a constant instead of using this literal 'AspNetUsers' 9 times.(ÏÍºê
+bcsharpsquid:S11923"EDefine a constant instead of using this literal 'tinyint(1)' 4 times.(òç†
+`csharpsquid:S1192I"CDefine a constant instead of using this literal 'Products' 5 times.(ã‡è˜
+ucsharpsquid:S1192M"XDefine a constant instead of using this literal 'MySql:ValueGenerationStrategy' 5 times.(Ş¡º†
+_csharpsquid:S1192Ü"ADefine a constant instead of using this literal 'Orders' 4 times.(áÉ¥Æ
+jcsharpsquid:S1192¡"GDefine a constant instead of using this literal 'OrderDetails' 4 times.(Û Âÿüÿÿÿÿ
