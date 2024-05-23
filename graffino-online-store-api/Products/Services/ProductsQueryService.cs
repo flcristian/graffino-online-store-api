@@ -1,4 +1,5 @@
-using graffino_online_store_api.Products.DTOs;
+using System.Collections;
+using graffino_online_store_api.Products.Models;
 using graffino_online_store_api.Products.Repository.Interfaces;
 using graffino_online_store_api.Products.Services.Interfaces;
 using graffino_online_store_api.System.Constants;
@@ -6,72 +7,85 @@ using graffino_online_store_api.System.Exceptions;
 
 namespace graffino_online_store_api.Products.Services;
 
-public class ProductsQueryService(IProductsRepository repository) : IProductsQueryService
+public class ProductsQueryService(
+    IProductsRepository repository
+    ) : IProductsQueryService
 {
-    public async Task<Dictionary<string, IEnumerable<object>>> GetAllProducts()
+    public async Task<IEnumerable<Category>> GetAllCategories()
     {
-        List<GetClothingResponse> clothing = (await repository.GetAllClothingAsync()).ToList();
-        List<GetTVResponse> televisions = (await repository.GetAllTelevisionsAsync()).ToList();
+        List<Category> categories = (await repository.GetAllCategoriesAsync()).ToList();
 
-        if (clothing.Count == 0 && televisions.Count == 0)
+        if (categories.Count == 0)
+        {
+            throw new ItemsDoNotExistException(ExceptionMessages.CATEGORIES_DO_NOT_EXIST);
+        }
+
+        return categories;
+    }
+
+    public async Task<IEnumerable<Product>> GetAllProducts()
+    {
+        List<Product> products = (await repository.GetAllProductsAsync()).ToList();
+
+        if (products.Count == 0)
         {
             throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
         }
+
+        return products;
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId)
+    {
+        List<Product> products = (await repository.GetProductsByCategoryIdAsync(categoryId)).ToList();
         
-        Dictionary<string, IEnumerable<object>> result = new Dictionary<string, IEnumerable<object>>
-        {
-            { "Clothing", clothing },
-            { "Television", televisions }
-        };
-
-        return result;
-    }
-
-    public async Task<IEnumerable<GetClothingResponse>> GetAllClothing()
-    {
-        List<GetClothingResponse> clothing = (await repository.GetAllClothingAsync()).ToList();
-
-        if (clothing.Count == 0)
+        if (products.Count == 0)
         {
             throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
         }
 
-        return clothing;
+        return products;
     }
 
-    public async Task<IEnumerable<GetTVResponse>> GetAllTelevisions()
+    public async Task<Category?> GetCategoryById(int categoryId)
     {
-        List<GetTVResponse> televisions = (await repository.GetAllTelevisionsAsync()).ToList();
+        Category? category = await repository.GetCategoryByIdAsync(categoryId);
 
-        if (televisions.Count == 0)
+        if (category == null)
         {
-            throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
+            throw new ItemDoesNotExistException(ExceptionMessages.CATEGORY_DOES_NOT_EXIST);
         }
 
-        return televisions;
+        return category;
     }
 
-    public async Task<GetClothingResponse> GetClothingById(int id)
+    public async Task<Product?> GetProductById(int productId)
     {
-        GetClothingResponse? clothing = await repository.GetClothingByIdAsync(id);
+        Product? product = await repository.GetProductByIdAsync(productId);
 
-        if (clothing == null)
-        {
-            throw new ItemDoesNotExistException(ExceptionMessages.PRODUCT_DOES_NOT_EXIST);
-        }
-
-        return clothing;
-    }
-
-    public async Task<GetTVResponse> GetTVById(int id)
-    {
-        GetTVResponse? tv = await repository.GetTVByIdAsync(id);
-
-        if (tv == null)
+        if (product == null)
         {
             throw new ItemDoesNotExistException(ExceptionMessages.PRODUCT_DOES_NOT_EXIST);
         }
 
-        return tv;
+        return product;
+    }
+
+    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage)
+    {
+        List<Product> products = (await repository.FilterProducts(categoryId, search, properties, page, itemsPerPage)).ToList();
+        
+        if (products.Count == 0)
+        {
+            if(!categoryId.HasValue && string.IsNullOrEmpty(search) && properties.Count == 0 && !page.HasValue && !itemsPerPage.HasValue)
+            {
+                throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
+
+            }
+
+            throw new ItemsDoNotExistException(ExceptionMessages.NO_PRODUCTS_FOR_FILTERS);
+        }
+
+        return products;
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graffino_online_store_api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class RefactorProductTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,22 +70,17 @@ namespace graffino_online_store_api.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Categories",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    price = table.Column<double>(type: "double", nullable: false),
-                    category = table.Column<int>(type: "int", nullable: false),
-                    dateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    imageUrl = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.id);
+                    table.PrimaryKey("PK_Categories", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -240,46 +235,48 @@ namespace graffino_online_store_api.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Clothing",
+                name: "Products",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    color = table.Column<string>(type: "longtext", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    style = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    size = table.Column<string>(type: "longtext", nullable: false)
+                    price = table.Column<double>(type: "double", nullable: false),
+                    category = table.Column<int>(type: "int", nullable: false),
+                    dateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    imageUrl = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clothing", x => x.id);
+                    table.PrimaryKey("PK_Products", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Clothing_Products_id",
-                        column: x => x.id,
-                        principalTable: "Products",
+                        name: "FK_Products_Categories_category",
+                        column: x => x.category,
+                        principalTable: "Categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Televisions",
+                name: "Properties",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    diameter = table.Column<string>(type: "longtext", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    resolution = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    categoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Televisions", x => x.id);
+                    table.PrimaryKey("PK_Properties", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Televisions_Products_id",
-                        column: x => x.id,
-                        principalTable: "Products",
+                        name: "FK_Properties_Categories_categoryId",
+                        column: x => x.categoryId,
+                        principalTable: "Categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -308,6 +305,35 @@ namespace graffino_online_store_api.Migrations
                         name: "FK_OrderDetails_Products_productId",
                         column: x => x.productId,
                         principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ProductProperties",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    productId = table.Column<int>(type: "int", nullable: false),
+                    propertyId = table.Column<int>(type: "int", nullable: false),
+                    value = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductProperties", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ProductProperties_Products_productId",
+                        column: x => x.productId,
+                        principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductProperties_Properties_propertyId",
+                        column: x => x.propertyId,
+                        principalTable: "Properties",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -356,7 +382,7 @@ namespace graffino_online_store_api.Migrations
                 column: "orderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ProductId",
+                name: "IX_OrderDetails_productId",
                 table: "OrderDetails",
                 column: "productId");
 
@@ -364,6 +390,26 @@ namespace graffino_online_store_api.Migrations
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "customerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductProperties_productId",
+                table: "ProductProperties",
+                column: "productId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductProperties_propertyId",
+                table: "ProductProperties",
+                column: "propertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_category",
+                table: "Products",
+                column: "category");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_categoryId",
+                table: "Properties",
+                column: "categoryId");
         }
 
         /// <inheritdoc />
@@ -385,13 +431,10 @@ namespace graffino_online_store_api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Clothing");
-
-            migrationBuilder.DropTable(
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "Televisions");
+                name: "ProductProperties");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -403,7 +446,13 @@ namespace graffino_online_store_api.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Properties");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

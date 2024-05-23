@@ -1,5 +1,3 @@
-using graffino_online_store_api.Products.Models;
-
 namespace graffino_online_store_api.Products.DTOs;
 
 public class UpdateProductRequest
@@ -8,4 +6,5 @@ public class UpdateProductRequest
     public string Name { get; set; }
     public double Price { get; set; }
     public string ImageUrl { get; set; }
+    public List<UpdateProductPropertyRequest> ProductProperties { get; set; }
 }

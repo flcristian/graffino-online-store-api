@@ -5,7 +5,7 @@ using graffino_online_store_api.OrderDetails.Models;
 
 namespace graffino_online_store_api.Products.Models;
 
-public abstract class Product
+public class Product
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,7 +22,7 @@ public abstract class Product
     
     [Required]
     [Column("category")]
-    public Category Category { get; set; }
+    public int CategoryId { get; set; }
     
     [Required]
     [Column("dateAdded")]
@@ -31,6 +31,10 @@ public abstract class Product
     [Required]
     [Column("imageUrl")]
     public string ImageUrl { get; set; }
+    
+    public virtual List<ProductProperty> ProductProperties { get; set; }
+    
+    public virtual Category Category { get; set; }
     
     [JsonIgnore]
     public virtual IEnumerable<OrderDetail> OrderDetails { get; set; }

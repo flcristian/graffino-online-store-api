@@ -14,7 +14,6 @@ public class OrdersCommandService(
     IUsersRepository usersRepository,
     IOrdersRepository ordersRepository,
     IProductsRepository productsRepository
-    
     ) : IOrdersCommandService
 {
     public async Task<Order> CreateOrder(CreateOrderRequest request)
