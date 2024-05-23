@@ -55,10 +55,6 @@ Z
 0graffino-online-store-api/Orders/Models/Order.cs,2\b\2ba3a1940de717138d2d81de8a816cc288f26a8a
 l
 <graffino-online-store-api/OrderDetails/Models/OrderDetail.cs,5\c\5c77bbd83227ec91416b6fcde22a2340513a7d8a
-|
-Lgraffino-online-store-api/Data/Migrations/FluentMigrator/InitializeTables.cs,d\f\df8a7af05c414aadf10dc95d3ec224e1a6057407
-}
-Mgraffino-online-store-api/Data/Migrations/FluentMigrator/CreateOrderTables.cs,d\5\d542b547ad23594e8401625225e9c26be4ab1999
 w
 Ggraffino-online-store-api/OrderDetails/DTOs/CreateOrderDetailRequest.cs,2\a\2aa24276420c99365aa0b1be601f765e7bbc7b09
 w
@@ -69,8 +65,6 @@ Kgraffino-online-store-api/OrderDetails/Repository/OrderDetailsRepository.cs,b\
 Wgraffino-online-store-api/OrderDetails/Repository/Interfaces/IOrderDetailsRepository.cs,a\5\a554764cad6ccc1505b6be1ef6e59fc4eba31de8
 f
 6graffino-online-store-api/Orders/Models/OrderStatus.cs,f\5\f560841f947a5cb19505b94d727b51cfaf4d314c
-è
-_graffino-online-store-api/Data/Migrations/FluentMigrator/AddStatusAndDatePlacedToOrdersTable.cs,f\e\fe852e9c62c37a781b7c2fa37546e4b15a83c54e
 {
 Kgraffino-online-store-api/Orders/Repository/Interfaces/IOrdersRepository.cs,9\a\9a3a62f9587d510785c128f8e35b7d18214ce414
 k
@@ -111,8 +105,6 @@ n
 >graffino-online-store-api/Users/Controllers/UsersController.cs,5\7\5769cb7a25cf3083f6a50ed7d9b66594f7557b08
 |
 Lgraffino-online-store-api/Users/Controllers/Interfaces/UsersApiController.cs,c\6\c61f87b7e06b2bc358af0dc955af8f755d05fb54
-ê
-`graffino-online-store-api/Data/Migrations/EntityFramework/20240515105816_InitializeUserTables.cs,2\b\2b5040a82c459f0b9144e0590356bf2b38eca000
 Ü
 Vgraffino-online-store-api/Data/Migrations/EntityFramework/AppDbContextModelSnapshot.cs,5\6\56334550f0454a01abd75da630d6274ad585e640
 m
@@ -123,3 +115,9 @@ Ygraffino-online-store-api/Data/Migrations/EntityFramework/20240522110848_Initia
 Kgraffino-online-store-api/System/Intercom/Controllers/CheckoutController.cs,6\2\6287c80aa6c07a2e00c0c186c1177b3727334c3a
 q
 Agraffino-online-store-api/System/Intercom/DTOs/CheckoutRequest.cs,b\3\b33a0a012d521a7a6259f8c3dd8f51d0826d4dc3
+y
+Igraffino-online-store-api/System/Intercom/DTOs/CheckoutOrderDetailsDTO.cs,c\b\cb907807546eacab2b2cf3636416041b7bacaf47
+x
+Hgraffino-online-store-api/System/Intercom/DTOs/CheckoutOrderDetailDTO.cs,7\c\7c1feb584a5894408474db33ad44d08c3e849229
+z
+Jgraffino-online-store-api/System/Intercom/DTOs/CheckoutProductDetailDTO.cs,9\a\9a3c2f2b0c727d256ebd17b4e6da4cc1d0a3de47

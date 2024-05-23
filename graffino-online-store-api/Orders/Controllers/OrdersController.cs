@@ -85,7 +85,7 @@ public class OrdersController(
         {
             Order order = await commandService.CreateOrder(request);
 
-            return Created(GenerateUriForOrder(order.Id), order);
+            return Created("Created", order);
         }
         catch (ItemDoesNotExistException exception)
         {

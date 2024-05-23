@@ -1,4 +1,6 @@
 using graffino_online_store_api.Data;
+using graffino_online_store_api.Orders.Controllers;
+using graffino_online_store_api.Orders.Controllers.Interfaces;
 using graffino_online_store_api.Orders.Repository;
 using graffino_online_store_api.Orders.Repository.Interfaces;
 using graffino_online_store_api.Orders.Services;
@@ -83,6 +85,8 @@ internal class Program
         builder.Services.AddScoped<IProductsCommandService, ProductsCommandService>();
         builder.Services.AddScoped<IOrdersQueryService, OrdersQueryService>();
         builder.Services.AddScoped<IOrdersCommandService, OrdersCommandService>();
+
+        builder.Services.AddScoped<OrdersApiController, OrdersController>();
         
         // MISCELLANEOUS
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
