@@ -27,7 +27,7 @@ public class Product
     [Required]
     [Column("dateAdded")]
     public DateTime DateAdded { get; set; }
-    
+        
     [Required]
     [Column("imageUrl")]
     public string ImageUrl { get; set; }

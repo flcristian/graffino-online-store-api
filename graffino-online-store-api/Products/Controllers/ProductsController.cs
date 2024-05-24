@@ -107,11 +107,44 @@ public class ProductsController(
 
         try
         {
-            IEnumerable<Product> products = await queryService.FilterProducts(categoryId, search, properties, page, itemsPerPage);
+            IEnumerable<Product> products =
+                await queryService.FilterProducts(categoryId, search, properties, page, itemsPerPage);
 
             return Ok(products);
         }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        catch (InvalidValueException exception)
+        {
+            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
+            return BadRequest(exception.Message);
+        }
         catch (ItemsDoNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<Dictionary<string, List<string>>>> FilterCriteria(int categoryId)
+    {
+        logger.LogInformation("GET Rest Request: Get filter criteria for categoryId: {CategoryId}", categoryId);
+
+        try
+        {
+            Dictionary<string, List<string>> filterCriteria = await queryService.GetFilterCriteria(categoryId);
+
+            return Ok(filterCriteria);
+        }
+        catch (ItemsDoNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        catch (ItemDoesNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
             return NotFound(exception.Message);

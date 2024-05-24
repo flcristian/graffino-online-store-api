@@ -10,4 +10,5 @@ public interface IProductsQueryService
     Task<Category> GetCategoryById(int categoryId);
     Task<Product> GetProductById(int productId);
     Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage);
+    Task<Dictionary<string, List<string>>> GetFilterCriteria(int categoryId);
 }

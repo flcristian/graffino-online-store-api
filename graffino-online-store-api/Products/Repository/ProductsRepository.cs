@@ -168,7 +168,8 @@ public class ProductsRepository(
         if (!string.IsNullOrWhiteSpace(search))
         {
             products = products.Where(p => p.Name.ToLower().Contains(search.ToLower()) ||
-                p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(search.ToLower())));
+                p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(search.ToLower())) ||
+                p.Category.Name.ToLower().Contains(search.ToLower()));
         }
 
         foreach (var property in properties)

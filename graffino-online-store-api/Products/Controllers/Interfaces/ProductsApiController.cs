@@ -44,6 +44,7 @@ public abstract class ProductsApiController : ControllerBase
 
     [HttpGet("filter-products")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
+    [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Product>>> FilterProducts(
@@ -53,6 +54,12 @@ public abstract class ProductsApiController : ControllerBase
         [FromQuery] int? page,
         [FromQuery] int? itemsPerPage
     );
+
+    [HttpGet("filter-criteria/{categoryId}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Dictionary<string, List<string>>))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Dictionary<string, List<string>>>> FilterCriteria([FromRoute] int categoryId);
     
     #endregion
 
