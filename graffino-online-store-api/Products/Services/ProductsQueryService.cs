@@ -70,9 +70,9 @@ public class ProductsQueryService(
         return product;
     }
 
-    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage)
+    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
-        List<Product> products = (await repository.FilterProducts(categoryId, search, properties, page, itemsPerPage)).ToList();
+        List<Product> products = (await repository.FilterProducts(categoryId, search, properties, page, itemsPerPage, sort)).ToList();
 
         if (categoryId.HasValue && await repository.GetCategoryByIdAsync(categoryId.Value) == null)
         {

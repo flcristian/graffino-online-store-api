@@ -52,7 +52,8 @@ public abstract class ProductsApiController : ControllerBase
         [FromQuery] string? search,
         [FromQuery] Dictionary<string, string> properties,
         [FromQuery] int? page,
-        [FromQuery] int? itemsPerPage
+        [FromQuery] int? itemsPerPage,
+        [FromQuery] string? sort
     );
 
     [HttpGet("filter-criteria/{categoryId}")]

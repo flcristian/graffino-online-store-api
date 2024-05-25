@@ -147,12 +147,13 @@ public class ProductsRepository(
         return product;
     }
 
-    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage)
+    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
         properties.Remove("categoryId");
         properties.Remove("search");
         properties.Remove("page");
         properties.Remove("itemsPerPage");
+        properties.Remove("sort");
         
         IEnumerable<Product> products = await context.Products
             .Include(p => p.Category)
@@ -167,9 +168,16 @@ public class ProductsRepository(
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            products = products.Where(p => p.Name.ToLower().Contains(search.ToLower()) ||
-                p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(search.ToLower())) ||
-                p.Category.Name.ToLower().Contains(search.ToLower()));
+            var searchLower = search.ToLower();
+            products = products.Where(p =>
+                    p.Name.ToLower().Contains(searchLower) ||
+                    p.Category.Name.ToLower().Contains(searchLower) ||
+                    p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(searchLower))
+                )
+                .OrderByDescending(p => p.Name.ToLower().Contains(searchLower)) // Highest priority
+                .ThenByDescending(p => p.Category.Name.ToLower().Contains(searchLower)) // Second priority
+                .ThenByDescending(p => p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(searchLower))) // Third priority
+                .ToList();
         }
 
         foreach (var property in properties)
@@ -184,6 +192,25 @@ public class ProductsRepository(
             int pageSize = itemsPerPage.Value;
 
             products = products.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+        
+        if (!string.IsNullOrWhiteSpace(sort))
+        {
+            switch (sort)
+            {
+                case "priceasc":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "pricedesc":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                case "dateasc":
+                    products = products.OrderBy(p => p.DateAdded);
+                    break;
+                case "datedesc":
+                    products = products.OrderByDescending(p => p.DateAdded);
+                    break;
+            }
         }
 
         return products;
