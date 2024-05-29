@@ -83,3 +83,5 @@ e
 5graffino-online-store-api/Products/Models/Category.cs,6\1\618ebc917ba4005c01e1095805be7e2cb43ccd9e
 T
 $graffino-online-store-api/Dockerfile,3\5\354e4a5685a257d2367d96b83ff40dad1c4405b4
+p
+@graffino-online-store-api/Products/DTOs/UpdateCategoryRequest.cs,8\2\825856de848be220d1ae22fe86a3d309e0b6a68e

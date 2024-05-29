@@ -1,0 +1,1 @@
+select products.name, products.price, categories.name from (products inner join categories on products.category = categories.id)

@@ -199,6 +199,11 @@ public class ProductsController(
 
             return Accepted("Updated", category);
         }
+        catch (ItemAlreadyExistsException exception)
+        {
+            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
+            return BadRequest(exception.Message);
+        }
         catch (ItemDoesNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");

@@ -1,18 +1,19 @@
 
-†csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$8ba63a10-d475-41e7-9b63-0015416eab45
-†csharpsquid:S2629/"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$7949faf7-07e0-467a-8817-3dc1ec574704
-†csharpsquid:S2629@"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$f0f5cb8f-58e2-4e61-a234-a22f035607cd
-†csharpsquid:S2629Q"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$b4bf12ae-c79f-4b79-aa9d-73cae3cc279f
-†csharpsquid:S2629b"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$3f0a1b77-7da2-490c-9b3f-4754ce60442a
-†csharpsquid:S2629u"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$f3bed98b-d363-48d4-ae63-9f6292471caa
-‹csharpsquid:S2629z"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$e5e487f2-94b4-4ee6-86de-711ceacb8ac2
-†csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$824d6fc8-f519-4612-8250-dee331ee7804
-‡csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$38620070-b9af-4493-95c6-1f6c2b596523
-‡csharpsquid:S2629•"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$cf67df74-0667-4831-9b6c-c66a513301e7
-Œcsharpsquid:S2629ª"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$dd2dce82-8e28-4626-973a-3d14ee210cd0
-Œcsharpsquid:S2629»"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$6ba4d61b-0aa8-4b02-9d7f-b5e4e5f29470
-‡csharpsquid:S2629Ì"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$eb2c4a07-114d-4a98-8643-210cba535307
-Œcsharpsquid:S2629Ý"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$466f3074-20da-4e42-952d-7fca9232af1e
-‡csharpsquid:S2629â"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$12e4d5b9-498e-4a9a-bbb2-067a6dd9d4e5
-‡csharpsquid:S2629ó"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$f0d212fd-1253-4dab-b32d-fcb1851c34f7
-‡csharpsquid:S2629„"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$22cf52b1-2247-4fa4-8764-d28e5cef6c40
+†csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$29c0c84d-b9de-4276-b158-b3773a912c2c
+†csharpsquid:S2629/"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$ca5d7bca-4ae0-4f09-83e5-2a495780dffd
+†csharpsquid:S2629@"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$dd66c787-2049-4c11-baf9-b5c839f8aad0
+†csharpsquid:S2629Q"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$debbff10-ec7c-4340-a956-92065c7d3f04
+†csharpsquid:S2629b"<Don't use string interpolation in logging message templates.(Ñžß¹8àÞúúú1J$2224cebb-49ec-4f56-b96d-6b794533712b
+†csharpsquid:S2629u"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$747e7bad-ac01-4e74-9572-9ce2260a79eb
+‹csharpsquid:S2629z"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$dc2e9e45-ccff-48bf-acee-4981daf7bb1f
+†csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$d179ef7a-7394-46a7-ab70-e040d1b14b39
+‡csharpsquid:S2629"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$e69afae0-b400-4592-a053-3cc1b801c452
+‡csharpsquid:S2629•"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$8bdabbd7-1a83-44c9-b35b-67ba2218c89d
+Œcsharpsquid:S2629ª"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$fbef7013-5ef5-464a-8f3a-3109b26b9a5f
+Œcsharpsquid:S2629»"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$4d9318ad-c277-474d-aa95-7344d99ee4f3
+Œcsharpsquid:S2629Ì"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8áÞúúú1J$731f8bbf-20b3-473d-a76a-59a64b2e8528
+‡csharpsquid:S2629Ñ"<Don't use string interpolation in logging message templates.(Ñžß¹8áÞúúú1J$8d36036d-2094-4b6d-8a8d-87facae09fbf
+Œcsharpsquid:S2629â"<Don't use string interpolation in logging message templates.(–†ëÃüÿÿÿÿ8¸ã£›ü1J$d58e9abf-8b0a-458c-a4b3-6114b9f36cd5
+‡csharpsquid:S2629ç"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$bed0554b-6daf-4708-af53-4f6dddb11ed2
+‡csharpsquid:S2629ø"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$5579d909-36eb-486e-b937-2f130098cc15
+‡csharpsquid:S2629‰"<Don't use string interpolation in logging message templates.(Ñžß¹8âÞúúú1J$39344433-a6e3-4d56-9c46-a7c14febcaab

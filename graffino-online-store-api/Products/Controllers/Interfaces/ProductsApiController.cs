@@ -81,6 +81,7 @@ public abstract class ProductsApiController : ControllerBase
     [HttpPut("update-category"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
     [ProducesResponseType(statusCode: 200, type: typeof(Category))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<Category>> UpdateCategory([FromBody] UpdateCategoryRequest request);
 
