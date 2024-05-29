@@ -1,3 +1,4 @@
+using System.Collections;
 using graffino_online_store_api.Products.DTOs;
 using graffino_online_store_api.Products.Models;
 
@@ -5,15 +6,17 @@ namespace graffino_online_store_api.Products.Repository.Interfaces;
 
 public interface IProductsRepository
 {
-    Task<IEnumerable<GetClothingResponse>> GetAllClothingAsync();
-    Task<IEnumerable<GetTVResponse>> GetAllTelevisionsAsync();
-    Task<Product?> GetProductByIdAsync(int id);
-    Task<GetClothingResponse?> GetClothingByIdAsync(int id);
-    Task<GetTVResponse?> GetTVByIdAsync(int id);
-    Task<GetClothingResponse> CreateClothingAsync(CreateClothingRequest request);
-    Task<GetTVResponse> CreateTVAsync(CreateTVRequest request);
-    Task<GetClothingResponse> UpdateClothingAsync(UpdateClothingRequest request);
-    Task<GetTVResponse> UpdateTVAsync(UpdateTVRequest request);
-    Task<GetClothingResponse> DeleteClothingByIdAsync(int id);
-    Task<GetTVResponse> DeleteTVByIdAsync(int id);
+    Task<IEnumerable<Category>> GetAllCategoriesAsync();
+    Task<IEnumerable<Product>> GetAllProductsAsync();
+    Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
+    Task<Category?> GetCategoryByIdAsync(int categoryId);
+    Task<Category?> GetCategoryByNameAsync(string categoryName);
+    Task<Product?> GetProductByIdAsync(int productId);
+    Task<Category> CreateCategoryAsync(CreateCategoryRequest request);
+    Task<Product> CreateProductAsync(CreateProductRequest request);
+    Task<Category> UpdateCategoryAsync(UpdateCategoryRequest request);
+    Task<Product> UpdateProductAsync(UpdateProductRequest request);
+    Task<Category> DeleteCategoryByIdAsync(int categoryId);
+    Task<Product> DeleteProductByIdAsync(int productId);
+    Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort);
 }

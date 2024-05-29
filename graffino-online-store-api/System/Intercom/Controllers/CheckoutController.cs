@@ -44,8 +44,8 @@ public class CheckoutController(
                 }
             },
             Mode = "payment",
-            SuccessUrl = "https://localhost:4200/success",
-            CancelUrl = "https://localhost:4200/cancel",
+            SuccessUrl = "http://localhost:4200/payment-successful",
+            CancelUrl = "http://localhost:4200/payment-canceled",
             Metadata = new Dictionary<string, string>{ {"order_request", orderRequestJson} }
         };
 

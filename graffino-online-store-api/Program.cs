@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using graffino_online_store_api.Data;
 using graffino_online_store_api.Orders.Controllers;
 using graffino_online_store_api.Orders.Controllers.Interfaces;
@@ -28,7 +29,10 @@ internal class Program
         
         var builder = WebApplication.CreateBuilder(args);
         
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
@@ -106,8 +110,8 @@ internal class Program
         app.MapIdentityApi<IdentityUser>();
         app.UseHttpsRedirection();
         app.UseCors(SystemConstants.CORS_CLIENT_POLICY_NAME);
-        app.UseAuthorization();
         app.UseRouting();
+        app.UseAuthorization();
         app.MapControllers();
         app.Run();
 

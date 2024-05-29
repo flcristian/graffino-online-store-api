@@ -1,5 +1,6 @@
 using graffino_online_store_api.Products.Controllers.Interfaces;
 using graffino_online_store_api.Products.DTOs;
+using graffino_online_store_api.Products.Models;
 using graffino_online_store_api.Products.Services.Interfaces;
 using graffino_online_store_api.System.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,36 @@ namespace graffino_online_store_api.Products.Controllers;
 
 public class ProductsController(
     ILogger<ProductsController> logger,
-    IProductsQueryService queryService, 
+    IProductsQueryService queryService,
     IProductsCommandService commandService
-    ) : ProductsApiController
+) : ProductsApiController
 {
     #region QUERY ENDPOINTS
-    
-    public override async Task<ActionResult<Dictionary<string, IEnumerable<object>>>> GetAllProducts()
+
+    public override async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+    {
+        logger.LogInformation("GET Rest Request: Get all categories.");
+
+        try
+        {
+            IEnumerable<Category> categories = await queryService.GetAllCategories();
+
+            return Ok(categories);
+        }
+        catch (ItemsDoNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
     {
         logger.LogInformation("GET Rest Request: Get all products.");
 
         try
         {
-            Dictionary<string, IEnumerable<object>> products = await queryService.GetAllProducts();
+            IEnumerable<Product> products = await queryService.GetAllProducts();
 
             return Ok(products);
         }
@@ -31,15 +49,15 @@ public class ProductsController(
         }
     }
 
-    public override async Task<ActionResult<IEnumerable<GetClothingResponse>>> GetAllClothing()
+    public override async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int categoryId)
     {
-        logger.LogInformation("GET Rest Request: Get all clothing.");
+        logger.LogInformation("GET Rest Request: Get products by category ID {Id}.", categoryId);
 
         try
         {
-            IEnumerable<GetClothingResponse> clothing = await queryService.GetAllClothing();
+            IEnumerable<Product> products = await queryService.GetProductsByCategoryId(categoryId);
 
-            return Ok(clothing);
+            return Ok(products);
         }
         catch (ItemsDoNotExistException exception)
         {
@@ -48,32 +66,15 @@ public class ProductsController(
         }
     }
 
-    public override async Task<ActionResult<IEnumerable<GetTVResponse>>> GetAllTelevisions()
+    public override async Task<ActionResult<Category>> GetCategoryById(int categoryId)
     {
-        logger.LogInformation("GET Rest Request: Get all televisions.");
+        logger.LogInformation("GET Rest Request: Get category by ID {Id}.", categoryId);
 
         try
         {
-            IEnumerable<GetTVResponse> televisions = await queryService.GetAllTelevisions();
+            Category category = await queryService.GetCategoryById(categoryId);
 
-            return Ok(televisions);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
-    }
-
-    public override async Task<ActionResult<GetClothingResponse>> GetClothingById(int id)
-    {
-        logger.LogInformation("GET Rest Request: Get clothing with ID {Id}.", id);
-
-        try
-        {
-            GetClothingResponse clothing = await queryService.GetClothingById(id);
-
-            return Ok(clothing);
+            return Ok(category);
         }
         catch (ItemDoesNotExistException exception)
         {
@@ -82,15 +83,66 @@ public class ProductsController(
         }
     }
 
-    public override async Task<ActionResult<GetTVResponse>> GetTelevisionById(int id)
+    public override async Task<ActionResult<Product>> GetProductById(int productId)
     {
-        logger.LogInformation("GET Rest Request: Get television with ID {Id}.", id);
+        logger.LogInformation("GET Rest Request: Get product by ID {Id}.", productId);
 
         try
         {
-            GetTVResponse television = await queryService.GetTVById(id);
+            Product product = await queryService.GetProductById(productId);
 
-            return Ok(television);
+            return Ok(product);
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<IEnumerable<Product>>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
+    {
+        logger.LogInformation("GET Rest Request: Filter products with categoryId: {CategoryId}, search: {Search}, properties: {Properties}, sort: {Sort}.",
+            categoryId, search, properties, sort);
+
+        try
+        {
+            IEnumerable<Product> products =
+                await queryService.FilterProducts(categoryId, search, properties, page, itemsPerPage, sort);
+
+            return Ok(products);
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+        catch (InvalidValueException exception)
+        {
+            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
+            return BadRequest(exception.Message);
+        }
+        catch (ItemsDoNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<Dictionary<string, List<string>>>> FilterCriteria(int categoryId)
+    {
+        logger.LogInformation("GET Rest Request: Get filter criteria for categoryId: {CategoryId}", categoryId);
+
+        try
+        {
+            Dictionary<string, List<string>> filterCriteria = await queryService.GetFilterCriteria(categoryId);
+
+            return Ok(filterCriteria);
+        }
+        catch (ItemsDoNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
         }
         catch (ItemDoesNotExistException exception)
         {
@@ -100,18 +152,35 @@ public class ProductsController(
     }
 
     #endregion
-    
+
     #region COMMAND ENDPOINTS
-    
-    public override async Task<ActionResult<GetClothingResponse>> CreateClothing(CreateClothingRequest request)
+
+    public override async Task<ActionResult<Category>> CreateCategory(CreateCategoryRequest request)
     {
-        logger.LogInformation("POST Rest Request: Create clothing.");
+        logger.LogInformation("POST Rest Request: Create category.");
 
         try
         {
-            GetClothingResponse clothing = await commandService.CreateClothing(request);
+            Category category = await commandService.CreateCategory(request);
 
-            return Created(GenerateUriForClothing(clothing.Id), clothing);
+            return Created("Created", category);
+        }
+        catch (ItemAlreadyExistsException exception)
+        {
+            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
+            return BadRequest(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<Product>> CreateProduct(CreateProductRequest request)
+    {
+        logger.LogInformation("POST Rest Request: Create product.");
+
+        try
+        {
+            Product product = await commandService.CreateProduct(request);
+
+            return Created("Created", product);
         }
         catch (InvalidValueException exception)
         {
@@ -120,113 +189,77 @@ public class ProductsController(
         }
     }
 
-    public override async Task<ActionResult<GetTVResponse>> CreateTelevision(CreateTVRequest request)
+    public override async Task<ActionResult<Category>> UpdateCategory(UpdateCategoryRequest request)
     {
-        logger.LogInformation("POST Rest Request: Create television.");
+        logger.LogInformation("PUT Rest Request: Update category with ID {Id}.", request.Id);
 
         try
         {
-            GetTVResponse television = await commandService.CreateTV(request);
+            Category category = await commandService.UpdateCategory(request);
 
-            return Created(GenerateUriForTelevision(television.Id), television);
+            return Accepted("Updated", category);
+        }
+        catch (ItemDoesNotExistException exception)
+        {
+            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
+            return NotFound(exception.Message);
+        }
+    }
+
+    public override async Task<ActionResult<Product>> UpdateProduct(UpdateProductRequest request)
+    {
+        logger.LogInformation("PUT Rest Request: Update product with ID {Id}.", request.Id);
+
+        try
+        {
+            Product product = await commandService.UpdateProduct(request);
+
+            return Accepted("Updated", product);
         }
         catch (InvalidValueException exception)
         {
             logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
-        }
-    }
-
-    public override async Task<ActionResult<GetClothingResponse>> UpdateClothing(UpdateClothingRequest request)
-    {
-        logger.LogInformation("PUT Rest Request: Update clothing with ID {Id}.", request.Id);
-
-        try
-        {
-            GetClothingResponse clothing = await commandService.UpdateClothing(request);
-
-            return Accepted(GenerateUriForClothing(clothing.Id), clothing);
-        }
-        catch (InvalidValueException exception)
-        {
-            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
         catch (ItemDoesNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
     }
 
-    public override async Task<ActionResult<GetTVResponse>> UpdateTelevision(UpdateTVRequest request)
+    public override async Task<ActionResult<Category>> DeleteCategoryById(int categoryId)
     {
-        logger.LogInformation("PUT Rest Request: Update television with ID {Id}.", request.Id);
+        logger.LogInformation("DELETE Rest Request: Delete category with ID {Id}.", categoryId);
 
         try
         {
-            GetTVResponse television = await commandService.UpdateTV(request);
+            Category category = await commandService.DeleteCategoryById(categoryId);
 
-            return Accepted(GenerateUriForClothing(television.Id), television);
-        }
-        catch (InvalidValueException exception)
-        {
-            logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
+            return Accepted("Deleted", category);
         }
         catch (ItemDoesNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
     }
 
-    public override async Task<ActionResult<GetClothingResponse>> DeleteClothing(int id)
+    public override async Task<ActionResult<Product>> DeleteProductById(int productId)
     {
-        logger.LogInformation("DELETE Rest Request: Delete clothing with ID {Id}.", id);
+        logger.LogInformation("DELETE Rest Request: Delete product with ID {Id}.", productId);
 
         try
         {
-            GetClothingResponse clothing = await commandService.DeleteClothingById(id);
+            Product product = await commandService.DeleteProductById(productId);
 
-            return Accepted(GenerateUriForClothing(clothing.Id), clothing);
+            return Accepted("Deleted", product);
         }
         catch (ItemDoesNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
-    }
-
-    public override async Task<ActionResult<GetTVResponse>> DeleteTelevision(int id)
-    {
-        logger.LogInformation("DELETE Rest Request: Delete television with ID {Id}.", id);
-
-        try
-        {
-            GetTVResponse television = await commandService.DeleteTVById(id);
-
-            return Accepted(GenerateUriForClothing(television.Id), television);
-        }
-        catch (ItemDoesNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return BadRequest(exception.Message);
-        }
-    }
-    
-    #endregion
-
-    #region PRIVATE METHODS
-
-    private string GenerateUriForClothing(int clothingId)
-    {
-        return Url.Action("GetClothingById", "Products", new { id = clothingId }, Request.Scheme)!;
-    }
-    
-    private string GenerateUriForTelevision(int televisionId)
-    {
-        return Url.Action("GetTelevisionById", "Products", new { id = televisionId }, Request.Scheme)!;
     }
 
     #endregion

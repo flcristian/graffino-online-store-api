@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace graffino_online_store_api.Products.Models;
 
-public class Category
+public class Property
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,8 +15,13 @@ public class Category
     [Column("name")]
     public string Name { get; set; }
     
-    public virtual List<Property> Properties { get; set; }
+    [Required]  
+    [Column("categoryId")]
+    public int CategoryId { get; set; }
     
     [JsonIgnore]
-    public virtual List<Product> Products { get; set; }
+    public virtual Category Category { get; set; }
+    
+    [JsonIgnore]
+    public virtual List<ProductProperty> ProductProperties { get; set; } 
 }

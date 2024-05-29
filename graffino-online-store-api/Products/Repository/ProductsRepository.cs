@@ -7,221 +7,212 @@ using Microsoft.EntityFrameworkCore;
 
 namespace graffino_online_store_api.Products.Repository;
 
-public class ProductsRepository(IMapper mapper, AppDbContext context) : IProductsRepository
+public class ProductsRepository(
+    AppDbContext context,
+    IMapper mapper
+    ) : IProductsRepository
 {
-    public async Task<IEnumerable<GetClothingResponse>> GetAllClothingAsync()
+    public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
     {
-        return await context.Clothing
-            .Join(
-                context.Products,
-                clothing => clothing.Id,
-                product => product.Id,
-                (clothing, product) => new GetClothingResponse()
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    DateAdded = product.DateAdded,
-                    ImageUrl = product.ImageUrl,
-                    Category = Category.Clothing,
-                    Color = clothing.Color,
-                    Style = clothing.Style,
-                    Size = clothing.Size,
-                })
+        return await context.Categories
+            .Include(c => c.Properties)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<GetTVResponse>> GetAllTelevisionsAsync()
+    public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
-        return await context.Televisions
-            .Join(
-                context.Products,
-                tv => tv.Id,
-                product => product.Id,
-                (tv, product) => new GetTVResponse
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    ImageUrl = product.ImageUrl,
-                    DateAdded = product.DateAdded,
-                    Category = Category.Television,
-                    Diameter = tv.Diameter,
-                    Resolution = tv.Resolution
-                })
+        return await context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductProperties)
+            .ThenInclude(pp => pp.Property)
             .ToListAsync();
     }
 
-    public async Task<Product?> GetProductByIdAsync(int id)
+    public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId)
     {
-        return await context.Products.FindAsync(id);
+        return await context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductProperties)
+            .ThenInclude(pp => pp.Property)
+            .Where(p => p.CategoryId == categoryId)
+            .ToListAsync();
     }
 
-    public async Task<GetClothingResponse?> GetClothingByIdAsync(int id)
+    public async Task<Category?> GetCategoryByIdAsync(int categoryId)
     {
-        Product? product = await context.Products.FindAsync(id);
-        
-        if (product != null)
-        {
-            Clothing clothing = (await context.Clothing.FindAsync(id))!;
-            return ConvertProductAndClothingToGetResponse(product, clothing);
-        }
-
-        return null;
-    }
-    
-    public async Task<GetTVResponse?> GetTVByIdAsync(int id)
-    {
-        Product? product = await context.Products.FindAsync(id);
-        
-        if (product != null)
-        {
-            TV tv = (await context.Televisions.FindAsync(id))!;
-            return ConvertProductAndTVToGetResponse(product, tv);
-        }
-
-        return null;
+        return await context.Categories
+            .Include(c => c.Properties)
+            .FirstOrDefaultAsync(c => c.Id == categoryId);
     }
     
-    public async Task<GetClothingResponse> CreateClothingAsync(CreateClothingRequest request)
+    public async Task<Category?> GetCategoryByNameAsync(string categoryName)
     {
-        Clothing clothing = mapper.Map<Clothing>(request);
-        clothing.DateAdded = DateTime.Now;
-        context.Clothing.Add(clothing);
-        await context.SaveChangesAsync();
-        return ConvertClothingToGetResponse(clothing);
+        return await context.Categories
+            .Include(c => c.Properties)
+            .FirstOrDefaultAsync(c => c.Name.Equals(categoryName));
     }
 
-    public async Task<GetTVResponse> CreateTVAsync(CreateTVRequest request)
+    public async Task<Product?> GetProductByIdAsync(int productId)
     {
-        TV tv = mapper.Map<TV>(request);
-        tv.DateAdded = DateTime.Now;
-        context.Televisions.Add(tv);
-        await context.SaveChangesAsync();
-        return ConvertTVToGetResponse(tv);
+        return await context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductProperties)
+            .ThenInclude(pp => pp.Property)
+            .FirstOrDefaultAsync(p => p.Id == productId);
     }
 
-    public async Task<GetClothingResponse> UpdateClothingAsync(UpdateClothingRequest request)
+    public async Task<Category> CreateCategoryAsync(CreateCategoryRequest request)
     {
-        Product product = (await context.Products.FindAsync(request.Id))!;
-        Clothing clothing = (await context.Clothing.FindAsync(request.Id))!;
+        Category category = new()
+        {
+            Name = request.Name
+        };
+        context.Categories.Add(category);
 
+        category.Properties = new List<Property>();
+        request.Properties.ForEach(p =>
+        {
+            Property property = mapper.Map<Property>(p);
+            category.Properties.Add(property);
+        });
+
+        await context.SaveChangesAsync();
+        return category;
+    }
+
+    public async Task<Product> CreateProductAsync(CreateProductRequest request)
+    {
+        Product product = new()
+        {
+            Name = request.Name,
+            Price = request.Price,
+            DateAdded = DateTime.Now,
+            ImageUrl = request.ImageUrl,
+            CategoryId = request.CategoryId
+        };
+        context.Products.Add(product);
+
+        product.ProductProperties = new List<ProductProperty>();
+        request.ProductProperties.ForEach(pp =>
+        {
+            ProductProperty productProperty = mapper.Map<ProductProperty>(pp);
+            product.ProductProperties.Add(productProperty);
+        });
+
+        await context.SaveChangesAsync();
+        return product;
+    }
+
+    public async Task<Category> UpdateCategoryAsync(UpdateCategoryRequest request)
+    {
+        Category category = (await GetCategoryByIdAsync(request.Id))!;
+        category.Name = request.Name;
+        context.Categories.Update(category);
+        await context.SaveChangesAsync();
+        return category;
+    }
+
+    public async Task<Product> UpdateProductAsync(UpdateProductRequest request)
+    {
+        Product product = (await GetProductByIdAsync(request.Id))!;
         product.Name = request.Name;
         product.Price = request.Price;
         product.ImageUrl = request.ImageUrl;
-
-        clothing.Color = request.Color;
-        clothing.Style = request.Style;
-        clothing.Size = request.Size;
-        
         context.Products.Update(product);
-        context.Clothing.Update(clothing);
-        await context.SaveChangesAsync();
 
-        return ConvertProductAndClothingToGetResponse(product, clothing);
+        product.ProductProperties = new List<ProductProperty>();
+        request.ProductProperties.ForEach(pp =>
+        {
+            ProductProperty productProperty = mapper.Map<ProductProperty>(pp);
+            product.ProductProperties.Add(productProperty);
+        });
+
+        await context.SaveChangesAsync();
+        return product;
     }
 
-    public async Task<GetTVResponse> UpdateTVAsync(UpdateTVRequest request)
+    public async Task<Category> DeleteCategoryByIdAsync(int categoryId)
     {
-        Product product = (await context.Products.FindAsync(request.Id))!;
-        TV tv = (await context.Televisions.FindAsync(request.Id))!;
-
-        product.Name = request.Name;
-        product.Price = request.Price;
-        product.ImageUrl = request.ImageUrl;
-        tv.Diameter = request.Diameter;
-        tv.Resolution = request.Resolution;
-        
-        context.Products.Update(product);
-        context.Televisions.Update(tv);
+        Category category = (await context.Categories.FindAsync(categoryId))!;
+        context.Categories.Remove(category);
         await context.SaveChangesAsync();
-
-        return ConvertProductAndTVToGetResponse(product, tv);
+        return category;
     }
 
-    public async Task<GetClothingResponse> DeleteClothingByIdAsync(int id)
+    public async Task<Product> DeleteProductByIdAsync(int productId)
     {
-        Product product = (await context.Products.FindAsync(id))!;
-        Clothing clothing = (await context.Clothing.FindAsync(id))!;
-        context.Clothing.Remove(clothing);
+        Product product = (await context.Products.FindAsync(productId))!;
         context.Products.Remove(product);
         await context.SaveChangesAsync();
-        return ConvertProductAndClothingToGetResponse(product, clothing);
-    }
-    
-    public async Task<GetTVResponse> DeleteTVByIdAsync(int id)
-    {
-        Product product = (await context.Products.FindAsync(id))!;
-        TV tv = (await context.Televisions.FindAsync(id))!;
-        context.Televisions.Remove(tv);
-        context.Products.Remove(product);
-        await context.SaveChangesAsync();
-        return ConvertProductAndTVToGetResponse(product, tv);
-    }
-    
-    #region PRIVATE METHODS
-
-    private GetClothingResponse ConvertClothingToGetResponse(Clothing clothing)
-    {
-        return new GetClothingResponse
-        {
-            Id = clothing.Id,
-            Name = clothing.Name,
-            Price = clothing.Price,
-            ImageUrl = clothing.ImageUrl,
-            DateAdded = clothing.DateAdded,
-            Category = Category.Television,
-            Color = clothing.Color,
-            Style = clothing.Style,
-            Size = clothing.Size
-        };
+        return product;
     }
 
-    private GetTVResponse ConvertTVToGetResponse(TV tv)
+    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
-        return new GetTVResponse
-        {
-            Id = tv.Id,
-            Name = tv.Name,
-            Price = tv.Price,
-            ImageUrl = tv.ImageUrl,
-            DateAdded = tv.DateAdded,
-            Category = Category.Television,
-            Diameter = tv.Diameter,
-            Resolution = tv.Resolution
-        };
-    }
+        properties.Remove("categoryId");
+        properties.Remove("search");
+        properties.Remove("page");
+        properties.Remove("itemsPerPage");
+        properties.Remove("sort");
+        
+        IEnumerable<Product> products = await context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductProperties)
+            .ThenInclude(pp => pp.Property)
+            .ToListAsync();
 
-    private GetClothingResponse ConvertProductAndClothingToGetResponse(Product product, Clothing clothing)
-    {
-        return new GetClothingResponse
+        if (categoryId.HasValue)
         {
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price,
-            DateAdded = product.DateAdded,
-            ImageUrl = product.ImageUrl,
-            Category = Category.Clothing,
-            Color = clothing.Color,
-            Style = clothing.Style,
-            Size = clothing.Size,
-        };
-    }
-    
-    private GetTVResponse ConvertProductAndTVToGetResponse(Product product, TV tv)
-    {
-        return new GetTVResponse
+            products = products.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price,
-            DateAdded = product.DateAdded,
-            ImageUrl = product.ImageUrl,
-            Category = Category.Television,
-            Diameter = tv.Diameter,
-            Resolution = tv.Resolution
-        };
+            var searchLower = search.ToLower();
+            products = products.Where(p =>
+                    p.Name.ToLower().Contains(searchLower) ||
+                    p.Category.Name.ToLower().Contains(searchLower) ||
+                    p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(searchLower))
+                )
+                .OrderByDescending(p => p.Name.ToLower().Contains(searchLower)) // Highest priority
+                .ThenByDescending(p => p.Category.Name.ToLower().Contains(searchLower)) // Second priority
+                .ThenByDescending(p => p.ProductProperties.Any(pp => pp.Value.ToLower().Contains(searchLower))) // Third priority
+                .ToList();
+        }
+
+        foreach (var property in properties)
+        {
+            products = products.Where(p => p.ProductProperties.Any(pp => 
+                pp.Property.Name.ToLower().Equals(property.Key.ToLower()) && pp.Value.ToLower().Equals(property.Value.ToLower())));
+        }
+        
+        if (page.HasValue && itemsPerPage.HasValue)
+        {
+            int pageNumber = page.Value;
+            int pageSize = itemsPerPage.Value;
+
+            products = products.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+        
+        if (!string.IsNullOrWhiteSpace(sort))
+        {
+            switch (sort)
+            {
+                case "priceasc":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "pricedesc":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                case "dateasc":
+                    products = products.OrderBy(p => p.DateAdded);
+                    break;
+                case "datedesc":
+                    products = products.OrderByDescending(p => p.DateAdded);
+                    break;
+            }
+        }
+
+        return products;
     }
-    
-    #endregion
 }

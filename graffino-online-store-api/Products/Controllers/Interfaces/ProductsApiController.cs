@@ -1,4 +1,5 @@
 using graffino_online_store_api.Products.DTOs;
+using graffino_online_store_api.Products.Models;
 using graffino_online_store_api.System.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,78 +11,97 @@ namespace graffino_online_store_api.Products.Controllers.Interfaces;
 public abstract class ProductsApiController : ControllerBase
 {
     #region QUERY ENDPOINTS
+
+    [HttpGet("all-categories")]
+    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Category>))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<IEnumerable<Category>>> GetAllCategories();
     
     [HttpGet("all-products")]
-    [ProducesResponseType(statusCode: 200, type: typeof(Dictionary<string, IEnumerable<object>>))]
+    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<Dictionary<string, IEnumerable<object>>>> GetAllProducts();
-    
-    [HttpGet("all-clothing")]
-    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<GetClothingResponse>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<IEnumerable<GetClothingResponse>>> GetAllClothing();
-    
-    [HttpGet("all-televisions")]
-    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<GetTVResponse>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<IEnumerable<GetTVResponse>>> GetAllTelevisions();
+    public abstract Task<ActionResult<IEnumerable<Product>>> GetAllProducts();
 
-    [HttpGet("clothing/{id}")]
-    [ProducesResponseType(statusCode: 200, type: typeof(GetClothingResponse))]
+    [HttpGet("categories/{categoryId}/products")]
+    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<GetClothingResponse>> GetClothingById([FromRoute] int id);
-    
-    [HttpGet("television/{id}")]
-    [ProducesResponseType(statusCode: 200, type: typeof(GetTVResponse))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<GetTVResponse>> GetTelevisionById([FromRoute] int id);
+    public abstract Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int categoryId);
 
+    [HttpGet("category/{categoryId}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Category))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Category>> GetCategoryById(int categoryId);
+    
+    [HttpGet("product/{productId}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Product))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Product>> GetProductById(int productId);
+
+    [HttpGet("filter-products")]
+    [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
+    [ProducesResponseType(statusCode: 400, type: typeof(string))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<IEnumerable<Product>>> FilterProducts(
+        [FromQuery] int? categoryId,
+        [FromQuery] string? search,
+        [FromQuery] Dictionary<string, string> properties,
+        [FromQuery] int? page,
+        [FromQuery] int? itemsPerPage,
+        [FromQuery] string? sort
+    );
+
+    [HttpGet("filter-criteria/{categoryId}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Dictionary<string, List<string>>))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Dictionary<string, List<string>>>> FilterCriteria([FromRoute] int categoryId);
+    
     #endregion
 
     #region COMMAND ENDPOINTS
 
-    [HttpPost("create-clothing"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 201, type: typeof(GetClothingResponse))]
+    [HttpPost("create-category"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 201, type: typeof(Category))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<GetClothingResponse>> CreateClothing([FromBody] CreateClothingRequest request);
+    public abstract Task<ActionResult<Category>> CreateCategory([FromBody] CreateCategoryRequest request);
 
-    [HttpPost("create-television"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 201, type: typeof(GetTVResponse))]
+    [HttpPost("create-product"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 201, type: typeof(Product))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<GetTVResponse>> CreateTelevision([FromBody] CreateTVRequest request);
+    public abstract Task<ActionResult<Product>> CreateProduct([FromBody] CreateProductRequest request);
 
-    [HttpPut("update-clothing"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 202, type: typeof(GetClothingResponse))]
+    [HttpPut("update-category"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 200, type: typeof(Category))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Category>> UpdateCategory([FromBody] UpdateCategoryRequest request);
+
+    [HttpPut("update-product"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 200, type: typeof(Product))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<GetClothingResponse>> UpdateClothing([FromBody] UpdateClothingRequest request);
+    public abstract Task<ActionResult<Product>> UpdateProduct([FromBody] UpdateProductRequest request);
+
+    [HttpDelete("delete-category/{categoryId}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 200, type: typeof(Category))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Category>> DeleteCategoryById(int categoryId);
+
+    [HttpDelete("delete-product/{productId}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
+    [ProducesResponseType(statusCode: 200, type: typeof(Product))]
+    [ProducesResponseType(statusCode: 404, type: typeof(string))]
+    [Produces("application/json")]
+    public abstract Task<ActionResult<Product>> DeleteProductById(int productId);
     
-    [HttpPut("update-television"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 202, type: typeof(GetTVResponse))]
-    [ProducesResponseType(statusCode: 400, type: typeof(string))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<GetTVResponse>> UpdateTelevision([FromBody] UpdateTVRequest request);
-
-    [HttpDelete("delete-clothing/{id}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 202, type: typeof(GetClothingResponse))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<GetClothingResponse>> DeleteClothing([FromRoute] int id);
-    
-    [HttpDelete("delete-television/{id}"), Authorize(Policy = AuthorizationPolicies.REQUIRE_ADMIN_POLICY)]
-    [ProducesResponseType(statusCode: 202, type: typeof(GetTVResponse))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
-    [Produces("application/json")]
-    public abstract Task<ActionResult<GetTVResponse>> DeleteTelevision([FromRoute] int id);
-
     #endregion
 }

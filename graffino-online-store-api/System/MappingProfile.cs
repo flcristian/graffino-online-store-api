@@ -10,9 +10,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<CreateClothingRequest, Clothing>();
-        CreateMap<CreateTVRequest, TV>();
+        CreateMap<CreatePropertyRequest, Property>();
+        CreateMap<CreateProductPropertyRequest, ProductProperty>();
         CreateMap<CreateOrderDetailRequest, OrderDetail>();
-        
     }
 }
