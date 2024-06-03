@@ -1,3 +1,4 @@
+using graffino_online_store_api.Products.DTOs;
 using graffino_online_store_api.Products.Models;
 using graffino_online_store_api.Products.Repository.Interfaces;
 using graffino_online_store_api.Products.Services.Interfaces;
@@ -70,9 +71,9 @@ public class ProductsQueryService(
         return product;
     }
 
-    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
+    public async Task<FilterProductsResponse> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
-        List<Product> products = (await repository.FilterProducts(categoryId, search, properties, page, itemsPerPage, sort)).ToList();
+        FilterProductsResponse response = (await repository.FilterProducts(categoryId, search, properties, page, itemsPerPage, sort));
 
         if (categoryId.HasValue && await repository.GetCategoryByIdAsync(categoryId.Value) == null)
         {
@@ -84,7 +85,7 @@ public class ProductsQueryService(
             throw new InvalidValueException(ExceptionMessages.INVALID_PAGINATION_PARAMETERS);
         }
         
-        if (products.Count == 0)
+        if (response.Products.Count == 0)
         {
             if(!categoryId.HasValue && string.IsNullOrEmpty(search) && properties.Count == 0 && !page.HasValue && !itemsPerPage.HasValue)
             {
@@ -95,7 +96,7 @@ public class ProductsQueryService(
             throw new ItemsDoNotExistException(ExceptionMessages.NO_PRODUCTS_FOR_FILTERS);
         }
 
-        return products;
+        return response;
     }
 
     public async Task<Dictionary<string, List<string>>> GetFilterCriteria(int categoryId)

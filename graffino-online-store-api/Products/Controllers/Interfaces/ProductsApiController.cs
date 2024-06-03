@@ -47,7 +47,7 @@ public abstract class ProductsApiController : ControllerBase
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
     [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
-    public abstract Task<ActionResult<IEnumerable<Product>>> FilterProducts(
+    public abstract Task<ActionResult<FilterProductsResponse>> FilterProducts(
         [FromQuery] int? categoryId,
         [FromQuery] string? search,
         [FromQuery] Dictionary<string, string> properties,

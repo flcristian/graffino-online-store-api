@@ -85,3 +85,5 @@ T
 $graffino-online-store-api/Dockerfile,3\5\354e4a5685a257d2367d96b83ff40dad1c4405b4
 p
 @graffino-online-store-api/Products/DTOs/UpdateCategoryRequest.cs,8\2\825856de848be220d1ae22fe86a3d309e0b6a68e
+q
+Agraffino-online-store-api/Products/DTOs/FilterProductsResponse.cs,1\a\1a2fff6773603c1a6601934dbe702440d5840b77

@@ -100,17 +100,17 @@ public class ProductsController(
         }
     }
 
-    public override async Task<ActionResult<IEnumerable<Product>>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
+    public override async Task<ActionResult<FilterProductsResponse>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
         logger.LogInformation("GET Rest Request: Filter products with categoryId: {CategoryId}, search: {Search}, properties: {Properties}, sort: {Sort}.",
             categoryId, search, properties, sort);
 
         try
         {
-            IEnumerable<Product> products =
+            FilterProductsResponse response =
                 await queryService.FilterProducts(categoryId, search, properties, page, itemsPerPage, sort);
 
-            return Ok(products);
+            return Ok(response);
         }
         catch (ItemDoesNotExistException exception)
         {
