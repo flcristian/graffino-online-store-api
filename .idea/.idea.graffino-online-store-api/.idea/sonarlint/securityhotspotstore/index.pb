@@ -87,3 +87,9 @@ p
 @graffino-online-store-api/Products/DTOs/UpdateCategoryRequest.cs,8\2\825856de848be220d1ae22fe86a3d309e0b6a68e
 q
 Agraffino-online-store-api/Products/DTOs/FilterProductsResponse.cs,1\a\1a2fff6773603c1a6601934dbe702440d5840b77
+]
+-graffino-online-store-api/docker-compose.yaml,8\d\8d3c6e6436a7c13ee7f945b16f79838e49b98018
+f
+6graffino-online-store-api/appsettings.Development.json,a\4\a400a6d779828bfbdd38926f914b3847597be422
+=
+.dockerignore,0\5\05a721ebe3ba0754116825ed1359ff1785f4bbac

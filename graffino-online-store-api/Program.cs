@@ -49,15 +49,20 @@ internal class Program
         
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(SystemConstants.CORS_CLIENT_POLICY_NAME, domain => domain.WithOrigins("http://localhost:4200")
+            options.AddPolicy(SystemConstants.CORS_CLIENT_POLICY_NAME, domain => domain.WithOrigins("http://localhost:4200", "http://webapp:80", "http://clientapp")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
             );
-        }); 
-        
+        });
+
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseMySql(builder.Configuration.GetConnectionString(SystemConstants.SQL_CONFIGURATION_NAME)!,
-                new MySqlServerVersion(new Version(8, 0, 21))));
+                new MySqlServerVersion(new Version(8, 0, 21)),
+                mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null)
+            ));
         
         #endregion
         
@@ -101,6 +106,12 @@ internal class Program
 
         var app = builder.Build();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.Migrate();
+        }
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
