@@ -6,7 +6,7 @@
 : "${TAG:?TAG not set or empty}"
 
 # Source service_version_number.sh
-source ./service_version_number.sh
+source ./../service_version_number.sh
 
 # Check if SERVICE_VERSION is defined
 if [ -z "$SERVICE_VERSION" ]; then
