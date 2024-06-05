@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["graffino-online-store-api/graffino-online-store-api.csproj", "graffino-online-store-api/"]
-RUN dotnet restore "graffino-online-store-api/graffino-online-store-api.csproj"
+# RUN dotnet restore "graffino-online-store-api/graffino-online-store-api.csproj"
 COPY . .
 WORKDIR "/src/graffino-online-store-api"
 RUN dotnet build "graffino-online-store-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
