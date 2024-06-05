@@ -45,7 +45,7 @@ jobs:
         run: |
             cd graffino-online-store-deployment/
             echo -e "Current ./docker-compose.yaml\n$(cat docker-compose.yaml)"
-            sed -i -E 's_(florescucristian/graffino-online-store-api:)([^"]*)\1'${{ env.BUILD_NUMBER }}'' docker-compose.yaml
+            sed -i -E 's_(florescucristian/graffino-online-store-api:)[^"]*_\1'${{ env.BUILD_NUMBER }}'_g' docker-compose.yaml
             echo -e "Updated ./docker-compose.yaml\n$(cat docker-compose.yaml)"
             git config user.name github-actions
             git config user.email github-actions@github.com
