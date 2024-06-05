@@ -21,17 +21,9 @@ public class OrdersController(
     {
         logger.LogInformation("GET Rest Request: Get all orders.");
         
-        try
-        {
-            IEnumerable<Order> orders = await queryService.GetAllOrders();
+        IEnumerable<Order> orders = await queryService.GetAllOrders();
 
-            return Ok(orders);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
+        return Ok(orders);
     }
 
     public override async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCustomerId(string customerId)
@@ -45,11 +37,6 @@ public class OrdersController(
             return Ok(orders);
         }
         catch (ItemDoesNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
-        catch (ItemsDoNotExistException exception)
         {
             logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
             return NotFound(exception.Message);

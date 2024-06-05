@@ -19,51 +19,27 @@ public class ProductsController(
     {
         logger.LogInformation("GET Rest Request: Get all categories.");
 
-        try
-        {
-            IEnumerable<Category> categories = await queryService.GetAllCategories();
+        IEnumerable<Category> categories = await queryService.GetAllCategories();
 
-            return Ok(categories);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
+        return Ok(categories);
     }
 
     public override async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
     {
         logger.LogInformation("GET Rest Request: Get all products.");
 
-        try
-        {
-            IEnumerable<Product> products = await queryService.GetAllProducts();
+        IEnumerable<Product> products = await queryService.GetAllProducts();
 
-            return Ok(products);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
+        return Ok(products);
     }
 
     public override async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int categoryId)
     {
         logger.LogInformation("GET Rest Request: Get products by category ID {Id}.", categoryId);
 
-        try
-        {
-            IEnumerable<Product> products = await queryService.GetProductsByCategoryId(categoryId);
+        IEnumerable<Product> products = await queryService.GetProductsByCategoryId(categoryId);
 
-            return Ok(products);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
-        }
+        return Ok(products);
     }
 
     public override async Task<ActionResult<Category>> GetCategoryById(int categoryId)
@@ -121,11 +97,6 @@ public class ProductsController(
         {
             logger.LogInformation(exception, $"400 Rest Response: {exception.Message}");
             return BadRequest(exception.Message);
-        }
-        catch (ItemsDoNotExistException exception)
-        {
-            logger.LogInformation(exception, $"404 Rest Response: {exception.Message}");
-            return NotFound(exception.Message);
         }
     }
 

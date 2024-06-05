@@ -14,19 +14,16 @@ public abstract class ProductsApiController : ControllerBase
 
     [HttpGet("all-categories")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Category>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Category>>> GetAllCategories();
     
     [HttpGet("all-products")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Product>>> GetAllProducts();
 
     [HttpGet("categories/{categoryId}/products")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int categoryId);
 
@@ -45,7 +42,6 @@ public abstract class ProductsApiController : ControllerBase
     [HttpGet("filter-products")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Product>))]
     [ProducesResponseType(statusCode: 400, type: typeof(string))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<FilterProductsResponse>> FilterProducts(
         [FromQuery] int? categoryId,

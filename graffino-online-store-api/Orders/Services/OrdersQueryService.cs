@@ -16,11 +16,6 @@ public class OrdersQueryService(
     {
         List<Order> orders = (await ordersRepository.GetAllAsync()).ToList();
 
-        if (orders.Count == 0)
-        {
-            throw new ItemsDoNotExistException(ExceptionMessages.ORDERS_DO_NOT_EXIST);
-        }
-
         return orders;
     }
 
@@ -32,11 +27,6 @@ public class OrdersQueryService(
         }
         
         List<Order> orders = (await ordersRepository.GetAllByCustomerIdAsync(customerId)).ToList();
-
-        if (orders.Count == 0)
-        {
-            throw new ItemsDoNotExistException(ExceptionMessages.CUSTOMER_HAS_NO_ORDERS);
-        }
 
         return orders;
     }

@@ -49,7 +49,7 @@ internal class Program
         
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(SystemConstants.CORS_CLIENT_POLICY_NAME, domain => domain.WithOrigins("http://localhost:4200", "http://webapp:80", "http://clientapp")
+            options.AddPolicy(SystemConstants.CORS_CLIENT_POLICY_NAME, domain => domain.WithOrigins("http://localhost:4200", "http://clientapp")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
             );

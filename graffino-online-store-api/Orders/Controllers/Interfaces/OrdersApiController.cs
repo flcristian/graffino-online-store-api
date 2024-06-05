@@ -14,7 +14,6 @@ public abstract class OrdersApiController : ControllerBase
     
     [HttpGet("all-orders")]
     [ProducesResponseType(statusCode: 200, type: typeof(IEnumerable<Order>))]
-    [ProducesResponseType(statusCode: 404, type: typeof(string))]
     [Produces("application/json")]
     public abstract Task<ActionResult<IEnumerable<Order>>> GetAllOrders();
     

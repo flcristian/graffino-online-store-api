@@ -15,11 +15,6 @@ public class ProductsQueryService(
     {
         List<Category> categories = (await repository.GetAllCategoriesAsync()).ToList();
 
-        if (categories.Count == 0)
-        {
-            throw new ItemsDoNotExistException(ExceptionMessages.CATEGORIES_DO_NOT_EXIST);
-        }
-
         return categories;
     }
 
@@ -27,22 +22,12 @@ public class ProductsQueryService(
     {
         List<Product> products = (await repository.GetAllProductsAsync()).ToList();
 
-        if (products.Count == 0)
-        {
-            throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
-        }
-
         return products;
     }
 
     public async Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId)
     {
         List<Product> products = (await repository.GetProductsByCategoryIdAsync(categoryId)).ToList();
-        
-        if (products.Count == 0)
-        {
-            throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
-        }
 
         return products;
     }
@@ -83,17 +68,6 @@ public class ProductsQueryService(
         if (page < 1 || itemsPerPage < 1)
         {
             throw new InvalidValueException(ExceptionMessages.INVALID_PAGINATION_PARAMETERS);
-        }
-        
-        if (response.Products.Count == 0)
-        {
-            if(!categoryId.HasValue && string.IsNullOrEmpty(search) && properties.Count == 0 && !page.HasValue && !itemsPerPage.HasValue)
-            {
-                throw new ItemsDoNotExistException(ExceptionMessages.PRODUCTS_DO_NOT_EXIST);
-
-            }
-
-            throw new ItemsDoNotExistException(ExceptionMessages.NO_PRODUCTS_FOR_FILTERS);
         }
 
         return response;
