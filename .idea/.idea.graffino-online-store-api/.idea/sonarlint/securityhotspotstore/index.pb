@@ -81,5 +81,11 @@ q
 Agraffino-online-store-api/System/Intercom/DTOs/CheckoutRequest.cs,b\3\b33a0a012d521a7a6259f8c3dd8f51d0826d4dc3
 e
 5graffino-online-store-api/Products/Models/Category.cs,6\1\618ebc917ba4005c01e1095805be7e2cb43ccd9e
-T
-$graffino-online-store-api/Dockerfile,3\5\354e4a5685a257d2367d96b83ff40dad1c4405b4
+p
+@graffino-online-store-api/Products/DTOs/UpdateCategoryRequest.cs,8\2\825856de848be220d1ae22fe86a3d309e0b6a68e
+q
+Agraffino-online-store-api/Products/DTOs/FilterProductsResponse.cs,1\a\1a2fff6773603c1a6601934dbe702440d5840b77
+f
+6graffino-online-store-api/appsettings.Development.json,a\4\a400a6d779828bfbdd38926f914b3847597be422
+=
+.dockerignore,0\5\05a721ebe3ba0754116825ed1359ff1785f4bbac

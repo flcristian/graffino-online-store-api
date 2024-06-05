@@ -147,7 +147,7 @@ public class ProductsRepository(
         return product;
     }
 
-    public async Task<IEnumerable<Product>> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
+    public async Task<FilterProductsResponse> FilterProducts(int? categoryId, string? search, Dictionary<string, string> properties, int? page, int? itemsPerPage, string? sort)
     {
         properties.Remove("categoryId");
         properties.Remove("search");
@@ -185,6 +185,8 @@ public class ProductsRepository(
             products = products.Where(p => p.ProductProperties.Any(pp => 
                 pp.Property.Name.ToLower().Equals(property.Key.ToLower()) && pp.Value.ToLower().Equals(property.Value.ToLower())));
         }
+
+        int totalPages = itemsPerPage.HasValue ? (int)Math.Ceiling(products.Count() / (double)itemsPerPage.Value) : 1;
         
         if (page.HasValue && itemsPerPage.HasValue)
         {
@@ -213,6 +215,10 @@ public class ProductsRepository(
             }
         }
 
-        return products;
+        return new FilterProductsResponse
+        {
+            Products = products.ToList(),
+            TotalPages = totalPages
+        };
     }
 }

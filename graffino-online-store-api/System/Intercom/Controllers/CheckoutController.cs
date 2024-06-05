@@ -46,7 +46,11 @@ public class CheckoutController(
             Mode = "payment",
             SuccessUrl = "http://localhost:4200/payment-successful",
             CancelUrl = "http://localhost:4200/payment-canceled",
-            Metadata = new Dictionary<string, string>{ {"order_request", orderRequestJson} }
+            Metadata = new Dictionary<string, string>{ {"order_request", orderRequestJson} },
+            ShippingAddressCollection = new SessionShippingAddressCollectionOptions
+            {
+                AllowedCountries = new List<string> { "RO" }
+            }
         };
 
         foreach (CheckoutProductDetailDTO dto in request.ProductDetails)

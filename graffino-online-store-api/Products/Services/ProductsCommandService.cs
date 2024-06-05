@@ -40,6 +40,11 @@ public class ProductsCommandService(
             throw new ItemDoesNotExistException(ExceptionMessages.CATEGORY_DOES_NOT_EXIST);
         }
 
+        if (await repository.GetCategoryByNameAsync(request.Name) != null)
+        {
+            throw new ItemAlreadyExistsException(ExceptionMessages.CATEGORY_ALREADY_EXISTS);
+        }
+
         Category category = await repository.UpdateCategoryAsync(request);
         return category;
     }
