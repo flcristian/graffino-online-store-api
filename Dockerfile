@@ -1,5 +1,4 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -8,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["graffino-online-store-api/graffino-online-store-api.csproj", "graffino-online-store-api/"]
+RUN dotnet nuget locals all --clear
 RUN dotnet restore "graffino-online-store-api/graffino-online-store-api.csproj"
 COPY . .
 WORKDIR "/src/graffino-online-store-api"
