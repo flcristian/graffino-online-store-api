@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="graffino_online_store@localhost" uuid="b50ed97e-779f-4f2f-bc64-90ca0ccd8564">
+    <data-source source="LOCAL" name="graffino_online_store@3.249.5.214" uuid="b50ed97e-779f-4f2f-bc64-90ca0ccd8564">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3307/graffino_online_store</jdbc-url>
+      <jdbc-url>jdbc:mysql://3.249.5.214:3307/graffino_online_store</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("graffino-online-store-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71a20c4514324dc53f8e288df19ac30b4c300208")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("graffino-online-store-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("graffino-online-store-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

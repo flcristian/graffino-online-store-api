@@ -13,5 +13,7 @@ public class MappingProfile : Profile
         CreateMap<CreatePropertyRequest, Property>();
         CreateMap<CreateProductPropertyRequest, ProductProperty>();
         CreateMap<CreateOrderDetailRequest, OrderDetail>();
+        CreateMap<UpdateProductPropertyRequest, ProductProperty>();
+
     }
 }
